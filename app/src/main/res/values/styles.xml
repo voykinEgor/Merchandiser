@@ -20,7 +20,7 @@
     <style name="TextToCaption" parent="BaseTextStyle">
         <item name="fontFamily">@font/ysabeau_sc</item>
         <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextToList" parent="BaseTextStyle">
