@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/TextToTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Мерчендайзер"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEmailPhoneAuth"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextEmailPhoneAuth"
+        style="@style/CustomTextInputEditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="Почта"
+        android:textColorHint="@color/white"
+        android:inputType="textEmailAddress"
+        android:padding="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/editTextPassAuth"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextPassAuth"
+        style="@style/CustomTextInputEditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="Пароль"
+        android:textColorHint="@color/white"
+        android:inputType="textPassword"
+        android:padding="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/authButton"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailPhoneAuth"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <Button
+        android:id="@+id/authButton"
+        android:layout_width="220dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:backgroundTint="@color/hint_color"
+        android:fontFamily="@font/ysabeau_sc"
+        android:text="Войти"
+        android:textColor="@color/text_color"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassAuth" />
+
+    <TextView
+        android:id="@+id/linkRegToAuthTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/recovery_pass"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+
+        android:fontFamily="@font/ysabeau_sc"
+        app:layout_constraintTop_toBottomOf="@+id/authButton"
+        android:clickable="true"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
