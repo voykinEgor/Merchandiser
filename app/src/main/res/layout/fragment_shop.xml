@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.customTask.CustomTaskFragment">
+    tools:context=".presentation.shop.ShopFragment">
 
     <LinearLayout
         android:id="@+id/ll_backImage_cobs"
@@ -20,15 +20,15 @@
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/arrow_back_black"/>
+            android:src="@drawable/arrow_back_black" />
 
         <TextView
-            android:id="@+id/newTaskTextView"
+            android:id="@+id/shopTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/TextToTitle"
-            android:text="Новое задание"/>
+            android:text="Магазин 1"/>
 
         <View
             android:layout_width="45dp"
@@ -39,70 +39,36 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/shopTextView"
+        android:id="@+id/addressTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextToTitle"
-        android:textAlignment="textStart"
+        android:fontFamily="@font/ysabeau_sc"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Адрес: ул.Лесная, 25"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="30dp"
-        android:textSize="32sp"
-        android:text="Магазин:"
-        app:layout_constraintTop_toBottomOf="@id/ll_backImage_brandName"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:orientation="horizontal"
-        android:background="@drawable/purple_rect_with_radius"
-        android:gravity="center_vertical"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="30dp">
-
-        <TextView
-            android:id="@+id/addressTextView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-        <ImageView
-            android:id="@+id/filterImageView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/filter"/>
-
-        <ImageView
-            android:id="@+id/mapImageView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/map"/>
-
-    </LinearLayout>
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="30dp"/>
 
     <TextView
-        android:id="@+id/categoryTextView"
+        android:id="@+id/categoriesTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextToTitle"
-        android:textAlignment="textStart"
+        android:fontFamily="@font/ysabeau_sc"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Категории: сыр, молоко"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="30dp"
-        android:textSize="32sp"
-        android:text="Категории:"
-        app:layout_constraintTop_toBottomOf="@id/ll_backImage_brandName"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCategories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        tools:listitem="@layout/category_item"
+        tools:listitem="@layout/attach_photos_item"
         tools:itemCount="3"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/textViewCategories"/>
@@ -115,7 +81,7 @@
         android:layout_margin="30dp"
         android:backgroundTint="@color/hint_color"
         android:fontFamily="@font/ysabeau_sc"
-        android:text="Продолжить"
+        android:text="Завершить"
         android:textColor="@color/text_color"
         android:textSize="24sp" />
 
