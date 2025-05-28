@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.customTask.CustomTaskFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_backImage_cobs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/uploadImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/arrow_back_black"/>
+
+        <TextView
+            android:id="@+id/newTaskTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/TextToTitle"
+            android:text="Новое задание"/>
+
+        <View
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/shopTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextToTitle"
+        android:textAlignment="textStart"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="30dp"
+        android:textSize="32sp"
+        android:text="Магазин:"
+        app:layout_constraintTop_toBottomOf="@id/ll_backImage_brandName"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:background="@drawable/purple_rect_with_radius"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp">
+
+        <TextView
+            android:id="@+id/addressTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/filterImageView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/filter"/>
+
+        <ImageView
+            android:id="@+id/mapImageView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/map"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/categoryTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextToTitle"
+        android:textAlignment="textStart"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="30dp"
+        android:textSize="32sp"
+        android:text="Категории:"
+        app:layout_constraintTop_toBottomOf="@id/ll_backImage_brandName"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        tools:listitem="@layout/category_item"
+        tools:itemCount="3"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCategories"/>
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="220dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:backgroundTint="@color/hint_color"
+        android:fontFamily="@font/ysabeau_sc"
+        android:text="Продолжить"
+        android:textColor="@color/text_color"
+        android:textSize="24sp" />
+
+</LinearLayout>
