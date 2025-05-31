@@ -6,6 +6,8 @@ plugins {
 
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    kotlin("plugin.serialization") version "2.0.21"
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -48,6 +50,11 @@ android {
 }
 
 dependencies {
+
+    val nav_version = "2.9.0"
+
+    implementation("androidx.navigation:navigation-fragment:$nav_version")
+    implementation("androidx.navigation:navigation-ui:$nav_version")
 
     implementation ("com.yandex.android:maps.mobile:4.15.0-lite")
 

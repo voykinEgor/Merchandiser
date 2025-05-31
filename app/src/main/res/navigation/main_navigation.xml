@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/authFragment">
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.example.merchandiser.presentation.auth.AuthFragment"
+        android:label="AuthFragment" >
+        <action
+            android:id="@+id/action_authFragment_to_mainMenuFragment2"
+            app:destination="@id/mainMenuFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.merchandiser.presentation.map.MapFragment"
+        android:label="MapFragment" >
+        <action
+            android:id="@+id/action_mapFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customTaskFragment"
+        android:name="com.example.merchandiser.presentation.customTask.CustomTaskFragment"
+        android:label="fragment_custom_task"
+        tools:layout="@layout/fragment_custom_task" >
+        <action
+            android:id="@+id/action_customTaskFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="com.example.merchandiser.presentation.shop.ShopFragment"
+        android:label="fragment_shop"
+        tools:layout="@layout/fragment_shop" />
+    <fragment
+        android:id="@+id/taskFragment"
+        android:name="com.example.merchandiser.presentation.task.TaskFragment"
+        android:label="fragment_task"
+        tools:layout="@layout/fragment_task" >
+        <action
+            android:id="@+id/action_taskFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+        <action
+            android:id="@+id/action_taskFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainMenuFragment2"
+        android:name="com.example.merchandiser.presentation.mainMenu.MainMenuFragment"
+        android:label="MainMenuFragment" >
+        <action
+            android:id="@+id/action_mainMenuFragment2_to_taskFragment"
+            app:destination="@id/taskFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment2_to_customTaskFragment"
+            app:destination="@id/customTaskFragment" />
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+    </fragment>
+</navigation>

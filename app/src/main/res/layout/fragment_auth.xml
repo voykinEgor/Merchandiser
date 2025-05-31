@@ -29,7 +29,7 @@
         android:textColorHint="@color/white"
         android:inputType="textEmailAddress"
         android:padding="8dp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/editTextPassAuth"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:layout_editor_absoluteX="30dp" />
@@ -47,7 +47,7 @@
         android:textColorHint="@color/white"
         android:inputType="textPassword"
         android:padding="8dp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/authButton"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmailPhoneAuth"
         tools:layout_editor_absoluteX="30dp" />
