@@ -1,7 +1,9 @@
 package com.example.merchandiser.domain.useCases
 
-class CompleteTaskUseCase {
-    fun completeTask(taskId: Int){
+import com.example.merchandiser.domain.repositories.TaskRepository
 
-    }
+class CompleteTaskUseCase(
+    private val taskRepository: TaskRepository
+) {
+    fun completeTask(taskId: Int) = taskRepository.completeTask(taskId)
 }

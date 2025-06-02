@@ -1,7 +1,9 @@
 package com.example.merchandiser.domain.useCases
 
-class CreateTaskUseCase {
-    fun createTask(){
+import com.example.merchandiser.domain.repositories.TaskRepository
 
-    }
+class CreateTaskUseCase (
+    private val taskRepository: TaskRepository
+){
+    fun createTask() = taskRepository.createTask()
 }
