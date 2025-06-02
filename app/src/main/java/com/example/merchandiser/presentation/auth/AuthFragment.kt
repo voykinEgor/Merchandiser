@@ -8,12 +8,16 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentAuthBinding
+import javax.inject.Inject
 import kotlin.math.log
 
 class AuthFragment : Fragment() {
 
     private var _binding: FragmentAuthBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var viewModel: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
