@@ -8,7 +8,10 @@ import com.example.merchandiser.domain.ShopItem
 import com.example.merchandiser.domain.TaskItem
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -18,7 +21,8 @@ interface ApiService {
 
 
     //Tasks
-    suspend fun getTaskList(userId: Int): Response<List<TaskItem>>
+    @GET("tasks/users/{user_id}")
+    suspend fun getTaskList(@Path("user_id") userId: Int): Response<List<TaskItem>>
 
     suspend fun getCategoriesList(taskId: Int): Response<List<CategoryItem>>
 
