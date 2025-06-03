@@ -40,10 +40,11 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val responseLD = authUseCase.auth(email, password)
-                _authResponseLD.value = responseLD.value ?: run{
+                if (responseLD == null){
                     _errorMessageLD.value = "Неверный логин или пароль"
-                    null
+                    return@launch
                 }
+                _authResponseLD.value = responseLD
             } catch (e: Exception) {
                 _errorMessageLD.value = "Неверный логин или пароль"
             }

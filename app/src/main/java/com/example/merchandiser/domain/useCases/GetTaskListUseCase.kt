@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetTaskListUseCase @Inject constructor(
     private val taskRepository: TaskRepository
 ) {
-    fun getTaskList(userId: Int): List<TaskItem> = taskRepository.getTaskList(userId)
+   suspend fun getTaskList(userId: Int): List<TaskItem> = taskRepository.getTaskList(userId)
 }

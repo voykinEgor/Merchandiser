@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetCategoriesListUseCase @Inject constructor(
     private val taskRepository: TaskRepository
 ) {
-    fun getCategoriesList(taskId: Int): List<CategoryItem> = taskRepository.getCategoriesList(taskId)
+    suspend fun getCategoriesList(taskId: Int): List<CategoryItem> = taskRepository.getCategoriesList(taskId)
 }

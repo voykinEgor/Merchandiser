@@ -14,12 +14,11 @@ class AuthRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ): AuthRepository {
 
-    override suspend fun auth(login: String, password: String): LiveData<Int?> {
+    override suspend fun auth(login: String, password: String): Int? {
         val authRequest = AuthRequest(login, password)
         val response = apiService.authUser(authRequest)
         return if (response.isSuccessful){
-            val userId = response.body()?.data?.id
-            MutableLiveData(userId)
+            return response.body()?.data?.id
         }else{
             throw RuntimeException("Auth validation error: ${response.code()} ${response.message()}")
         }

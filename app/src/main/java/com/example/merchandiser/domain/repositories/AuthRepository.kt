@@ -5,7 +5,7 @@ import com.google.gson.JsonElement
 
 interface AuthRepository {
 
-    suspend fun auth(login: String, password: String): LiveData<Int?>
+    suspend fun auth(login: String, password: String): Int?
 
     fun logout()
 }

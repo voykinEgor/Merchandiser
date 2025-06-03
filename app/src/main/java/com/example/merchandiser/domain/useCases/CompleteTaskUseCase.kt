@@ -6,5 +6,5 @@ import javax.inject.Inject
 class CompleteTaskUseCase @Inject constructor(
     private val taskRepository: TaskRepository
 ) {
-    fun completeTask(taskId: Int) = taskRepository.completeTask(taskId)
+    suspend fun completeTask(taskId: Int) = taskRepository.completeTask(taskId)
 }
