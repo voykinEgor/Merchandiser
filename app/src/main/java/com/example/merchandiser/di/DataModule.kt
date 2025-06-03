@@ -13,22 +13,24 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-interface DataModule {
+abstract class DataModule {
 
     @Binds
     @ApplicationScope
-    fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
+    abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
 
     @Binds
     @ApplicationScope
-    fun bindShopRepository(impl: ShopRepositoryImpl): ShopRepository
+    abstract fun bindShopRepository(impl: ShopRepositoryImpl): ShopRepository
 
     @Binds
     @ApplicationScope
-    fun bindTaskRepository(impl: TaskRepositoryImpl): TaskRepository
+    abstract fun bindTaskRepository(impl: TaskRepositoryImpl): TaskRepository
 
-//    @Provides
-//    fun provideApiService(): ApiService{
-//        return ApiFactory.apiService
-//    }
+    companion object {
+        @Provides
+        fun provideApiService(): ApiService {
+            return ApiFactory.apiService
+        }
+    }
 }

@@ -1,15 +1,20 @@
 package com.example.merchandiser.data
 
 import android.net.Uri
+import com.example.merchandiser.data.models.AuthRequest
+import com.example.merchandiser.data.models.UserResponseDto
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopItem
 import com.example.merchandiser.domain.TaskItem
 import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface ApiService {
 
     //login
-    suspend fun authUser(login: String, password: String): Response<String>
+    @POST("users/login")
+    suspend fun authUser(@Body authRequest: AuthRequest): Response<UserResponseDto>
 
 
     //Tasks
