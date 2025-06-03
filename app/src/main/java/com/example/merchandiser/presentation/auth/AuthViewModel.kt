@@ -1,10 +1,12 @@
 package com.example.merchandiser.presentation.auth
 
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.merchandiser.LOG
 import com.example.merchandiser.domain.useCases.AuthUseCase
 import com.google.gson.JsonElement
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,8 +25,9 @@ class AuthViewModel @Inject constructor(
     val errorMessage: MutableStateFlow<String?> get() = _errorMessageLD
 
     fun auth(email: String, password: String){
+        Log.d(LOG, "Pattern Email: ${Patterns.EMAIL_ADDRESS.matcher(email).matches()}")
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            _errorMessageLD.value = "Неверный формат email"
+            _errorMessageLD.value = "Неверный email"
             return
         }
 

@@ -1,3 +1,3 @@
 package com.example.merchandiser
 
-val LOG = "LOG"
+val LOG = "LOG_TAG"
