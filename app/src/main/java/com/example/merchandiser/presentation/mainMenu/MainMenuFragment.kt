@@ -1,19 +1,44 @@
 package com.example.merchandiser.presentation.mainMenu
 
-import androidx.fragment.app.viewModels
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.merchandiser.R
-import com.example.merchandiser.databinding.FragmentAuthBinding
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.merchandiser.MerchApp
 import com.example.merchandiser.databinding.FragmentMainMenuBinding
+import com.example.merchandiser.presentation.ViewModelFactory
+import com.example.merchandiser.presentation.mainMenu.recyclerViewAdapters.RecyclerViewAdapter
+import javax.inject.Inject
+import kotlin.math.log
 
 class MainMenuFragment : Fragment() {
 
+    companion object{
+        private const val USER_ID = "FDSFDS"
+    }
+
     private var _binding: FragmentMainMenuBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var sharedPreferences: SharedPreferences
+
+    @Inject
+    lateinit var viewmodelFactory: ViewModelFactory
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewmodelFactory)[MainMenuViewModel::class.java]
+    }
+
+    private val component by lazy {
+        (requireActivity().application as MerchApp).component
+    }
+
+    private lateinit var rvAdapter: RecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +48,11 @@ class MainMenuFragment : Fragment() {
         return binding.root
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        component.inject(this)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -30,8 +60,29 @@ class MainMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPreferences = requireContext().getSharedPreferences(USER_ID, Context.MODE_PRIVATE)
         val args = MainMenuFragmentArgs.fromBundle(requireArguments())
-        //TODO: Дописать вывод задач по userId
-        args.userId
+        rvAdapter = RecyclerViewAdapter()
+        binding.recyclerViewTasks.adapter = rvAdapter
+        showTasksList(args.userId)
+
+        binding.logoutImageView.setOnClickListener {
+            logout()
+        }
+    }
+
+    fun showTasksList(userId: Int){
+        viewModel.getTasksList(userId)
+        viewModel.tasksList.observe(requireActivity()) {tasksList ->
+            rvAdapter.submitList(tasksList)
+        }
+    }
+
+    fun logout(){
+        sharedPreferences.edit().apply {
+            remove(USER_ID)
+            apply()
+        }
+        findNavController().popBackStack()
     }
 }

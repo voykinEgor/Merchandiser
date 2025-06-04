@@ -51,6 +51,7 @@ android {
 
 dependencies {
 
+    implementation(libs.filament.android)
     val nav_version = "2.9.0"
 
     implementation("androidx.navigation:navigation-fragment:$nav_version")
@@ -75,6 +76,6 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    implementation ("com.google.dagger:dagger:2.56.2")
-    kapt ("com.google.dagger:dagger-compiler:2.56.2")
+    implementation ("com.google.dagger:dagger:2.56.1")
+    kapt ("com.google.dagger:dagger-compiler:2.56.1")
 }

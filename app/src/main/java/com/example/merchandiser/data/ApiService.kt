@@ -3,6 +3,7 @@ package com.example.merchandiser.data
 import android.net.Uri
 import com.example.merchandiser.data.models.AuthRequest
 import com.example.merchandiser.data.models.TaskItemDto
+import com.example.merchandiser.data.models.TaskResponseDto
 import com.example.merchandiser.data.models.UserResponseDto
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopItem
@@ -23,7 +24,7 @@ interface ApiService {
 
     //Tasks
     @GET("tasks/users/{user_id}")
-    suspend fun getTaskList(@Path("user_id") userId: Int): Response<List<TaskItemDto>>
+    suspend fun getTaskList(@Path("user_id") userId: Int): Response<TaskResponseDto>
 
     suspend fun getCategoriesList(taskId: Int): Response<List<CategoryItem>>
 
