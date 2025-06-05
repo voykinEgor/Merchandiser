@@ -31,7 +31,11 @@ class RecyclerViewAdapter: ListAdapter<TaskItem, RecyclerViewHolder>(RecyclerVie
     ) {
         val task = getItem(position)
         holder.textViewName.text = task.name
-        holder.textViewDateTo.text = formatDate(task.date)
+
+        if (task.id == -1)
+            holder.textViewDateTo.text = ""
+        else
+            holder.textViewDateTo.text = formatDate(task.date)
 
         holder.itemView.setOnClickListener {
             onTaskItemClickListener?.invoke(task)

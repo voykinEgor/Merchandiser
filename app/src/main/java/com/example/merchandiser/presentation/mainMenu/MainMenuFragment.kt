@@ -3,16 +3,22 @@ package com.example.merchandiser.presentation.mainMenu
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.merchandiser.LOG
 import com.example.merchandiser.MerchApp
+import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentMainMenuBinding
+import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.presentation.ViewModelFactory
+import com.example.merchandiser.presentation.customTask.CustomTaskFragmentDirections
 import com.example.merchandiser.presentation.mainMenu.recyclerViewAdapters.RecyclerViewAdapter
+import com.google.android.gms.tasks.Task
 import javax.inject.Inject
 import kotlin.math.log
 
@@ -20,6 +26,7 @@ class MainMenuFragment : Fragment() {
 
     companion object{
         private const val USER_ID = "FDSFDS"
+
     }
 
     private var _binding: FragmentMainMenuBinding? = null
@@ -69,16 +76,25 @@ class MainMenuFragment : Fragment() {
         binding.logoutImageView.setOnClickListener {
             logout()
         }
+
     }
 
-    fun showTasksList(userId: Int){
+    private fun showTasksList(userId: Int){
         viewModel.getTasksList(userId)
         viewModel.tasksList.observe(requireActivity()) {tasksList ->
+
             rvAdapter.submitList(tasksList)
+            rvAdapter.onTaskItemClickListener = {
+                if (it.id == -1)
+                    findNavController().navigate(R.id.action_mainMenuFragment2_to_customTaskFragment)
+                else
+                    findNavController().navigate(MainMenuFragmentDirections.actionMainMenuFragment2ToTaskFragment(it.id))
+            }
+
         }
     }
 
-    fun logout(){
+    private fun logout(){
         sharedPreferences.edit().apply {
             remove(USER_ID)
             apply()
