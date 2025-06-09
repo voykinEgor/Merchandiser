@@ -26,7 +26,6 @@ class MainMenuFragment : Fragment() {
 
     companion object{
         private const val USER_ID = "FDSFDS"
-
     }
 
     private var _binding: FragmentMainMenuBinding? = null
