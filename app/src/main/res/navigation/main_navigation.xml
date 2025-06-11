@@ -35,7 +35,14 @@
         android:id="@+id/shopFragment"
         android:name="com.example.merchandiser.presentation.shop.ShopFragment"
         android:label="fragment_shop"
-        tools:layout="@layout/fragment_shop" />
+        tools:layout="@layout/fragment_shop" >
+        <argument
+            android:name="shopItem"
+            app:argType="com.example.merchandiser.data.models.transfer.ShopItemTransfer" />
+        <argument
+            android:name="categoryList"
+            app:argType="com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer" />
+    </fragment>
     <fragment
         android:id="@+id/taskFragment"
         android:name="com.example.merchandiser.presentation.task.TaskFragment"

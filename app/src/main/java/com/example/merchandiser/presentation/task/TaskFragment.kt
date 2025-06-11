@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.merchandiser.MerchApp
+import com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer
 import com.example.merchandiser.databinding.FragmentTaskBinding
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.task.recyclerViewAdapters.categories.RecyclerViewCategoriesAdapter
@@ -17,10 +18,6 @@ import com.example.merchandiser.presentation.task.recyclerViewAdapters.shops.Rec
 import javax.inject.Inject
 
 class TaskFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = TaskFragment()
-    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -34,12 +31,16 @@ class TaskFragment : Fragment() {
 
     private val args by navArgs<TaskFragmentArgs>()
 
-    private lateinit var categoriesAdapter: RecyclerViewCategoriesAdapter
-    private lateinit var shopsAdapter: RecyclerViewShopsAdapter
-
     private val component by lazy {
         (requireActivity().application as MerchApp).component
     }
+
+    private lateinit var categoriesAdapter: RecyclerViewCategoriesAdapter
+    private lateinit var shopsAdapter: RecyclerViewShopsAdapter
+
+    private lateinit var categoriesList: ListCategoriesItemTransfer
+
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,15 +59,25 @@ class TaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupCategoriesRV()
         setupShopsRV()
+        setupClickListeners()
 
-        binding.backImageView.setOnClickListener {
-            findNavController().popBackStack()
-        }
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupClickListeners(){
+        binding.backImageView.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        shopsAdapter.onItemClickListener = {
+            findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToShopFragment(it, categoriesList))
+        }
     }
 
     private fun setupCategoriesRV(){
@@ -75,6 +86,7 @@ class TaskFragment : Fragment() {
 
         val task = args.task
         val listCategories = viewModel.getCategories(task).toList()
+        categoriesList = ListCategoriesItemTransfer(listCategories)
         categoriesAdapter.submitList(listCategories)
 
     }

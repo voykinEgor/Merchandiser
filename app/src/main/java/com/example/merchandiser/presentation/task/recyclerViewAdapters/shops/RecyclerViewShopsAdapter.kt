@@ -11,6 +11,9 @@ import com.example.merchandiser.data.models.transfer.ShopItemTransfer
 class RecyclerViewShopsAdapter: ListAdapter<ShopItemTransfer, RecyclerViewShopsHolder>(
     RecyclerViewShopsDiffItem()
 ) {
+
+    var onItemClickListener: ((ShopItemTransfer) -> Unit)? = null
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -25,7 +28,10 @@ class RecyclerViewShopsAdapter: ListAdapter<ShopItemTransfer, RecyclerViewShopsH
     ) {
         val shop = getItem(position)
         holder.shopName.text = shop.name
-
         holder.status.visibility = View.INVISIBLE
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.invoke(shop)
+        }
     }
 }

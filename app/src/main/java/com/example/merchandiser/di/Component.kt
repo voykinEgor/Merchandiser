@@ -2,6 +2,7 @@ package com.example.merchandiser.di
 
 import com.example.merchandiser.presentation.auth.AuthFragment
 import com.example.merchandiser.presentation.mainMenu.MainMenuFragment
+import com.example.merchandiser.presentation.shop.ShopFragment
 import com.example.merchandiser.presentation.task.TaskFragment
 import dagger.Component
 
@@ -14,4 +15,6 @@ interface Component {
     fun inject(fragment: MainMenuFragment)
 
     fun inject(fragment: TaskFragment)
+
+    fun inject(fragment: ShopFragment)
 }
