@@ -25,5 +25,5 @@ data class TaskItemDto(
     val shops: List<ShopDto>,
 
     @SerializedName("categories")
-    val categories: List<CategoryDto>
+    val categories: Set<CategoryDto>
 )

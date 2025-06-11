@@ -86,8 +86,11 @@ class MainMenuFragment : Fragment() {
             rvAdapter.onTaskItemClickListener = {
                 if (it.id == -1)
                     findNavController().navigate(R.id.action_mainMenuFragment2_to_customTaskFragment)
-                else
-                    findNavController().navigate(MainMenuFragmentDirections.actionMainMenuFragment2ToTaskFragment(it.id))
+                else{
+                    val taskTransfer = viewModel.mapTaskDomainToTaskTransfer(it)
+                    findNavController().navigate(MainMenuFragmentDirections.actionMainMenuFragment2ToTaskFragment(taskTransfer))
+                }
+
             }
 
         }

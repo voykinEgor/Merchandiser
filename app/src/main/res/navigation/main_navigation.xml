@@ -47,8 +47,8 @@
         <action
             android:id="@+id/action_taskFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
-        <argument android:name="taskId"
-            app:argType="integer" />
+        <argument android:name="task"
+            app:argType="com.example.merchandiser.data.models.transfer.TaskItemTransfer" />
     </fragment>
     <fragment
         android:id="@+id/mainMenuFragment2"

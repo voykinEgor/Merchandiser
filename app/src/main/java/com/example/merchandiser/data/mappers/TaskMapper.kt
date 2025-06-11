@@ -1,6 +1,7 @@
 package com.example.merchandiser.data.mappers
 
 import com.example.merchandiser.data.models.TaskItemDto
+import com.example.merchandiser.data.models.transfer.TaskItemTransfer
 import com.example.merchandiser.domain.TaskItem
 import javax.inject.Inject
 
@@ -11,7 +12,7 @@ class TaskMapper @Inject constructor(
         id = taskDto.id,
         name = taskDto.name,
         date = taskDto.finishAt,
-        setCategoriesId = shopMapper.mapCategoriesListToCategoriesSet(taskDto.categories),
+        setCategoriesItems = shopMapper.mapCategoriesDtoSetToCategoriesDomainSet(taskDto.categories),
         listShops = shopMapper.mapShopListToShopDomainList(taskDto.shops),
         status = taskDto.status
     )
@@ -23,6 +24,15 @@ class TaskMapper @Inject constructor(
         }
         return taskDomainList
     }
+
+    fun mapTaskDomainToTaskTransfer(taskDomain: TaskItem): TaskItemTransfer = TaskItemTransfer(
+        id = taskDomain.id,
+        name = taskDomain.name,
+        date = taskDomain.date,
+        setCategoriesItems = shopMapper.mapCategoriesDomainSetToCategoriesTransferSet(taskDomain.setCategoriesItems),
+        listShops = shopMapper.mapShopDomainListToShopTransferList(taskDomain.listShops),
+        status = taskDomain.status
+    )
 
 
 }

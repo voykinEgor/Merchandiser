@@ -1,16 +1,19 @@
 package com.example.merchandiser.presentation.task
 
-import androidx.fragment.app.viewModels
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.merchandiser.R
+import androidx.navigation.fragment.navArgs
+import com.example.merchandiser.MerchApp
 import com.example.merchandiser.databinding.FragmentTaskBinding
 import com.example.merchandiser.presentation.ViewModelFactory
+import com.example.merchandiser.presentation.task.recyclerViewAdapters.categories.RecyclerViewCategoriesAdapter
+import com.example.merchandiser.presentation.task.recyclerViewAdapters.shops.RecyclerViewShopsAdapter
 import javax.inject.Inject
 
 class TaskFragment : Fragment() {
@@ -29,6 +32,20 @@ class TaskFragment : Fragment() {
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
 
+    private val args by navArgs<TaskFragmentArgs>()
+
+    private lateinit var categoriesAdapter: RecyclerViewCategoriesAdapter
+    private lateinit var shopsAdapter: RecyclerViewShopsAdapter
+
+    private val component by lazy {
+        (requireActivity().application as MerchApp).component
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        component.inject(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +56,8 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupCategoriesRV()
+        setupShopsRV()
 
         binding.backImageView.setOnClickListener {
             findNavController().popBackStack()
@@ -48,5 +67,25 @@ class TaskFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupCategoriesRV(){
+        categoriesAdapter = RecyclerViewCategoriesAdapter()
+        binding.recyclerViewCategories.adapter = categoriesAdapter
+
+        val task = args.task
+        val listCategories = viewModel.getCategories(task).toList()
+        categoriesAdapter.submitList(listCategories)
+
+    }
+
+    private fun setupShopsRV(){
+        shopsAdapter = RecyclerViewShopsAdapter()
+        binding.recyclerViewShops.adapter = shopsAdapter
+
+        val task = args.task
+        val listShops = viewModel.getShops(task)
+        shopsAdapter.submitList(listShops)
+
     }
 }

@@ -1,11 +1,12 @@
 package com.example.merchandiser.domain.useCases
 
 import com.example.merchandiser.domain.CategoryItem
+import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.domain.repositories.TaskRepository
 import javax.inject.Inject
 
-class GetCategoriesListUseCase @Inject constructor(
+class GetCategoriesSetUseCase @Inject constructor(
     private val taskRepository: TaskRepository
 ) {
-    suspend fun getCategoriesList(taskId: Int): List<CategoryItem> = taskRepository.getCategoriesList(taskId)
+    fun getCategoriesSet(taskItem: TaskItem): Set<CategoryItem> = taskRepository.getCategoriesList(taskItem)
 }

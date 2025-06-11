@@ -34,7 +34,7 @@ class TaskRepositoryImpl @Inject constructor (
         }
     }
 
-    override suspend fun getCategoriesList(taskId: Int): List<CategoryItem> {
-        TODO("Not yet implemented")
+    override fun getCategoriesList(taskItem: TaskItem): Set<CategoryItem> {
+        return taskItem.setCategoriesItems
     }
 }
