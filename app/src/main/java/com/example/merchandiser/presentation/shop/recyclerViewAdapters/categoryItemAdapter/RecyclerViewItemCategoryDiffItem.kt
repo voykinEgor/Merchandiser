@@ -1,10 +1,9 @@
-package com.example.merchandiser.presentation.shop.recyclerViewAdapters
+package com.example.merchandiser.presentation.shop.recyclerViewAdapters.categoryItemAdapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.merchandiser.data.models.transfer.CategoryItemTransfer
-import com.example.merchandiser.data.models.transfer.ShopItemTransfer
 
-class RecyclerViewPhotosDiffItem: DiffUtil.ItemCallback<CategoryItemTransfer>() {
+class RecyclerViewItemCategoryDiffItem: DiffUtil.ItemCallback<CategoryItemTransfer>() {
 
     override fun areItemsTheSame(
         oldItem: CategoryItemTransfer,

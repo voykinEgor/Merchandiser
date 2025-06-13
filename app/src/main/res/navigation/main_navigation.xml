@@ -42,6 +42,9 @@
         <argument
             android:name="categoryList"
             app:argType="com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer" />
+        <action
+            android:id="@+id/action_shopFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskFragment"
@@ -71,4 +74,8 @@
             android:name="userId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.merchandiser.presentation.CameraFragment"
+        android:label="CameraFragment" />
 </navigation>

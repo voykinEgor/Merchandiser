@@ -50,14 +50,22 @@ android {
 }
 
 dependencies {
+    //CameraX
+    implementation (libs.androidx.camera.core)
+    implementation (libs.androidx.camera.camera2)
+    implementation (libs.androidx.camera.lifecycle)
+    implementation (libs.androidx.camera.video)
+    implementation (libs.androidx.camera.view)
+    implementation (libs.androidx.camera.extensions)
+
 
     implementation(libs.filament.android)
-    val nav_version = "2.9.0"
 
-    implementation("androidx.navigation:navigation-fragment:$nav_version")
-    implementation("androidx.navigation:navigation-ui:$nav_version")
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
 
-    implementation ("com.yandex.android:maps.mobile:4.15.0-lite")
+    //Yandex MapKit
+    implementation (libs.maps.mobile)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -72,10 +80,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation ("com.google.code.gson:gson:2.8.7")
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation (libs.gson)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
 
-    implementation ("com.google.dagger:dagger:2.56.1")
-    kapt ("com.google.dagger:dagger-compiler:2.56.1")
+    implementation (libs.dagger)
+    kapt (libs.dagger.compiler)
 }
