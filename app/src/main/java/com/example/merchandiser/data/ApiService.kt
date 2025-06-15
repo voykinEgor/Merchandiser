@@ -7,13 +7,11 @@ import com.example.merchandiser.data.models.TaskItemDto
 import com.example.merchandiser.data.models.UserDto
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopItem
-import com.example.merchandiser.domain.TaskItem
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ApiService {
 

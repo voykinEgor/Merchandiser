@@ -1,7 +1,6 @@
 package com.example.merchandiser.di
 
 import android.app.Application
-import android.content.Context
 import com.example.merchandiser.presentation.auth.AuthFragment
 import com.example.merchandiser.presentation.mainMenu.MainMenuFragment
 import com.example.merchandiser.presentation.map.MapFragment
@@ -25,7 +24,7 @@ interface Component {
     fun inject(fragment: MapFragment)
 
     @Component.Factory
-    interface ComponentFactory{
+    interface ComponentFactory {
         fun create(
             @BindsInstance application: Application
         ): com.example.merchandiser.di.Component
