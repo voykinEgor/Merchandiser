@@ -1,10 +1,17 @@
 package com.example.merchandiser.presentation.task
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.LocationManager
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.LOCATION_SERVICE
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -12,6 +19,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer
 import com.example.merchandiser.databinding.FragmentTaskBinding
+import com.example.merchandiser.isInternetAvailable
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.task.recyclerViewAdapters.categories.RecyclerViewCategoriesAdapter
 import com.example.merchandiser.presentation.task.recyclerViewAdapters.shops.RecyclerViewShopsAdapter
@@ -22,7 +30,7 @@ class TaskFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private val viewModel by lazy{
+    private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[TaskViewModel::class.java]
     }
 
@@ -40,6 +48,7 @@ class TaskFragment : Fragment() {
 
     private lateinit var categoriesList: ListCategoriesItemTransfer
 
+    private lateinit var connectivityManager: ConnectivityManager
 
 
     override fun onAttach(context: Context) {
@@ -57,12 +66,14 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        connectivityManager =
+            requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        getLocatePermission()
+
         setupCategoriesRV()
         setupShopsRV()
         setupClickListeners()
-
-
-
     }
 
     override fun onDestroyView() {
@@ -70,17 +81,49 @@ class TaskFragment : Fragment() {
         _binding = null
     }
 
-    private fun setupClickListeners(){
+    private fun setupClickListeners() {
         binding.backImageView.setOnClickListener {
             findNavController().popBackStack()
         }
 
         shopsAdapter.onItemClickListener = {
-            findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToShopFragment(it, categoriesList))
+            findNavController().navigate(
+                TaskFragmentDirections.actionTaskFragmentToShopFragment(
+                    it,
+                    categoriesList
+                )
+            )
+        }
+
+        binding.mapActionButton.setOnClickListener {
+            val task = args.task
+            val listShops = viewModel.getShops(task)
+            if (listShops.isNotEmpty()) {
+                if (isInternetAvailable(connectivityManager)) {
+                    findNavController().navigate(
+                        TaskFragmentDirections.actionTaskFragmentToMapFragment(
+                            listShops.toTypedArray()
+                        )
+                    )
+                } else {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Нет подключения к интернету",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                findNavController().navigate(
+                    TaskFragmentDirections.actionTaskFragmentToMapFragment(null)
+                )
+                Toast.makeText(requireActivity(), "Данные еще не загружены", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
         }
     }
 
-    private fun setupCategoriesRV(){
+    private fun setupCategoriesRV() {
         categoriesAdapter = RecyclerViewCategoriesAdapter()
         binding.recyclerViewCategories.adapter = categoriesAdapter
 
@@ -91,7 +134,7 @@ class TaskFragment : Fragment() {
 
     }
 
-    private fun setupShopsRV(){
+    private fun setupShopsRV() {
         shopsAdapter = RecyclerViewShopsAdapter()
         binding.recyclerViewShops.adapter = shopsAdapter
 
@@ -99,5 +142,41 @@ class TaskFragment : Fragment() {
         val listShops = viewModel.getShops(task)
         shopsAdapter.submitList(listShops)
 
+    }
+
+    private fun getLocatePermission() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
+        }
+    }
+
+    private fun checkGPSandInetEnabled(): Boolean {
+        val locationManager =
+            requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
+
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        if (!isGpsEnabled && !isNetworkEnabled) {
+            Toast.makeText(
+                requireActivity(),
+                "Местоположение отключено. Пожалуйста, включите его.",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        } else {
+            return true
+        }
     }
 }
