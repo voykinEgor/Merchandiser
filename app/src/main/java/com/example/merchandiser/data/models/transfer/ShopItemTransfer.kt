@@ -1,5 +1,6 @@
 package com.example.merchandiser.data.models.transfer
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 

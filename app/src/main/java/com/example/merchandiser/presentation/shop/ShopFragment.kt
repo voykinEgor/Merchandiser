@@ -88,11 +88,14 @@ class ShopFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val shopItem = args.shopItem
-        val listCategories = args.categoryList.items
-        setupTextViews(shopItem, listCategories)
-        setupClickListeners()
-        setupRecyclerViews(listCategories)
-        checkCameraPermission()
+        val listCategories = args.categoryList?.items
+        if (listCategories != null){
+            setupTextViews(shopItem, listCategories)
+            setupClickListeners()
+            setupRecyclerViews(listCategories)
+            checkCameraPermission()
+        }
+
 
     }
 
@@ -142,8 +145,6 @@ class ShopFragment : Fragment() {
             }
         }
     }
-
-
 
     fun checkAndLaunchCamera() {
         val cameraPermission = android.Manifest.permission.CAMERA

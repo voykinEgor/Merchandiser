@@ -32,13 +32,13 @@ class CameraFragment : Fragment() {
 
 
     private lateinit var imageCapture: ImageCapture
-    private var photoUri: Uri? = null
 
     private val galleryOpen =
         registerForActivityResult(
             ActivityResultContracts.GetContent())
         { uri ->
             uri?.let {
+                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(it.toString()))
                 Log.d(LOG, "Uri picked in gallery: $it")
             }
         }
@@ -134,7 +134,7 @@ class CameraFragment : Fragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    photoUri = output.savedUri
+                    findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(output.savedUri.toString()))
                     Log.d(LOG, "Photo capture succeeded: ${output.savedUri}")
                 }
             }

@@ -41,10 +41,15 @@
             app:argType="com.example.merchandiser.data.models.transfer.ShopItemTransfer" />
         <argument
             android:name="categoryList"
-            app:argType="com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer" />
+            app:argType="com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer"
+            app:nullable="true" />
         <action
             android:id="@+id/action_shopFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <argument
+            android:name="photoUri"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/taskFragment"
@@ -77,5 +82,21 @@
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.merchandiser.presentation.CameraFragment"
-        android:label="CameraFragment" />
+        android:label="CameraFragment" >
+        <action
+            android:id="@+id/action_cameraFragment_to_acceptPhotoFragment"
+            app:destination="@id/acceptPhotoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/acceptPhotoFragment"
+        android:name="com.example.merchandiser.presentation.AcceptPhotoFragment"
+        android:label="fragment_accept_photo"
+        tools:layout="@layout/fragment_accept_photo" >
+        <action
+            android:id="@+id/action_acceptPhotoFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+        <argument
+            android:name="uri"
+            app:argType="string" />
+    </fragment>
 </navigation>
