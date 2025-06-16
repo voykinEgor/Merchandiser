@@ -38,10 +38,10 @@
         tools:layout="@layout/fragment_shop" >
         <argument
             android:name="shopItem"
-            app:argType="com.example.merchandiser.data.models.transfer.ShopItemTransfer" />
+            app:argType="com.example.merchandiser.domain.ShopItem" />
         <argument
             android:name="categoryList"
-            app:argType="com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer"
+            app:argType="com.example.merchandiser.domain.CategoryItem[]"
             app:nullable="true" />
         <action
             android:id="@+id/action_shopFragment_to_cameraFragment"
@@ -63,7 +63,7 @@
             android:id="@+id/action_taskFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
         <argument android:name="task"
-            app:argType="com.example.merchandiser.data.models.transfer.TaskItemTransfer" />
+            app:argType="com.example.merchandiser.domain.TaskItem" />
     </fragment>
     <fragment
         android:id="@+id/mainMenuFragment2"

@@ -8,5 +8,5 @@ import javax.inject.Inject
 class GetShopListUseCase @Inject constructor(
     private val shopRepository: ShopRepository
 ) {
-    fun getShopList(taskId: Int): List<ShopItem> = shopRepository.getShopList(taskId)
+    fun getShopList(taskItem: TaskItem): List<ShopItem> = shopRepository.getShopList(taskItem)
 }

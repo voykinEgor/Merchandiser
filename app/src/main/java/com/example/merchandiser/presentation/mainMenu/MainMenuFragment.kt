@@ -87,8 +87,7 @@ class MainMenuFragment : Fragment() {
                 if (it.id == -1)
                     findNavController().navigate(R.id.action_mainMenuFragment2_to_customTaskFragment)
                 else{
-                    val taskTransfer = viewModel.mapTaskDomainToTaskTransfer(it)
-                    findNavController().navigate(MainMenuFragmentDirections.actionMainMenuFragment2ToTaskFragment(taskTransfer))
+                    findNavController().navigate(MainMenuFragmentDirections.actionMainMenuFragment2ToTaskFragment(it))
                 }
 
             }

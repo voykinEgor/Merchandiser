@@ -38,7 +38,7 @@ class AcceptPhotoFragment : Fragment() {
         binding.photoImageView.setImageURI(photoUri)
 
         binding.acceptButton.setOnClickListener {
-            findNavController().navigate()
+//            findNavController().navigate()
         }
     }
 }

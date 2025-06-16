@@ -11,5 +11,5 @@ interface TaskRepository {
 
     suspend fun getTaskList(userId: Int): List<TaskItem>
 
-    fun getCategoriesList(tasksList: TaskItem): Set<CategoryItem>
+    fun getCategoriesSet(tasksList: TaskItem): Set<CategoryItem>
 }

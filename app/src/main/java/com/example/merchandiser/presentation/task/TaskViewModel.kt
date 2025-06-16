@@ -1,18 +1,24 @@
 package com.example.merchandiser.presentation.task
 
 import androidx.lifecycle.ViewModel
-import com.example.merchandiser.data.models.transfer.CategoryItemTransfer
-import com.example.merchandiser.data.models.transfer.ShopItemTransfer
-import com.example.merchandiser.data.models.transfer.TaskItemTransfer
+import com.example.merchandiser.data.mappers.ShopMapper
+import com.example.merchandiser.domain.CategoryItem
+import com.example.merchandiser.domain.ShopItem
+import com.example.merchandiser.domain.TaskItem
+import com.example.merchandiser.domain.useCases.GetCategoriesSetUseCase
+import com.example.merchandiser.domain.useCases.GetShopListUseCase
 import javax.inject.Inject
 
-class TaskViewModel @Inject constructor(): ViewModel() {
+class TaskViewModel @Inject constructor(
+    private val getCategoriesSetUseCase: GetCategoriesSetUseCase,
+    private val getShopListUseCase: GetShopListUseCase
+): ViewModel() {
 
-    fun getCategories(taskItem: TaskItemTransfer): Set<CategoryItemTransfer>{
-        return taskItem.setCategoriesItems
+    fun getCategories(taskItem: TaskItem): Set<CategoryItem>{
+        return getCategoriesSetUseCase.getCategoriesSet(taskItem)
     }
 
-    fun getShops(taskItem: TaskItemTransfer): List<ShopItemTransfer>{
-        return taskItem.listShops
+    fun getShops(taskItem: TaskItem): List<ShopItem>{
+        return getShopListUseCase.getShopList(taskItem)
     }
 }

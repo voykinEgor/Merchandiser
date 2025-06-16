@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.merchandiser.R
-import com.example.merchandiser.data.models.transfer.CategoryItemTransfer
 import com.example.merchandiser.domain.Photo
 import java.net.URI
 

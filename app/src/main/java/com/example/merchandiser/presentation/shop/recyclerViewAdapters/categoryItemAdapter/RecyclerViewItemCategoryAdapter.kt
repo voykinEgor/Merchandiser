@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.merchandiser.R
-import com.example.merchandiser.data.models.transfer.CategoryItemTransfer
 import com.example.merchandiser.domain.Photo
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.attachPhotoAdapter.RecyclerViewPhotoAdapter
 import java.net.URI
 import androidx.core.net.toUri
+import com.example.merchandiser.domain.CategoryItem
 
 
-class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryItemTransfer, RecyclerViewItemCategoryHolder>(
+class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryItem, RecyclerViewItemCategoryHolder>(
     RecyclerViewItemCategoryDiffItem()
 ) {
 

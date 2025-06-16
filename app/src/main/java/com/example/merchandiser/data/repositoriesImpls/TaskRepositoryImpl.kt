@@ -1,6 +1,7 @@
 package com.example.merchandiser.data.repositoriesImpls
 
 import com.example.merchandiser.data.ApiService
+import com.example.merchandiser.data.mappers.ShopMapper
 import com.example.merchandiser.data.mappers.TaskMapper
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.TaskItem
@@ -9,7 +10,8 @@ import javax.inject.Inject
 
 class TaskRepositoryImpl @Inject constructor (
     private val apiService: ApiService,
-    private val taskMapper: TaskMapper
+    private val taskMapper: TaskMapper,
+    private val shopMapper: ShopMapper
 ): TaskRepository {
     override suspend fun completeTask(taskId: Int) {
         TODO("Not yet implemented")
@@ -34,7 +36,7 @@ class TaskRepositoryImpl @Inject constructor (
         }
     }
 
-    override fun getCategoriesList(taskItem: TaskItem): Set<CategoryItem> {
-        return taskItem.setCategoriesItems
+    override fun getCategoriesSet(taskItem: TaskItem): Set<CategoryItem> {
+        return taskItem.categoriesList
     }
 }

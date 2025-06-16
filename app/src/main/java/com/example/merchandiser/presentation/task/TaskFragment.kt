@@ -10,8 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.merchandiser.MerchApp
-import com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer
 import com.example.merchandiser.databinding.FragmentTaskBinding
+import com.example.merchandiser.domain.CategoryItem
+import com.example.merchandiser.domain.ShopsInTasks
+import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.task.recyclerViewAdapters.categories.RecyclerViewCategoriesAdapter
 import com.example.merchandiser.presentation.task.recyclerViewAdapters.shops.RecyclerViewShopsAdapter
@@ -38,7 +40,9 @@ class TaskFragment : Fragment() {
     private lateinit var categoriesAdapter: RecyclerViewCategoriesAdapter
     private lateinit var shopsAdapter: RecyclerViewShopsAdapter
 
-    private lateinit var categoriesList: ListCategoriesItemTransfer
+    private lateinit var categoriesList: List<CategoryItem>
+
+    private lateinit var taskItem: TaskItem
 
 
 
@@ -57,7 +61,10 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupCategoriesRV()
+        taskItem = args.task
+        binding.merchTextView.text = taskItem.name
+
+        setupCategoriesRV(taskItem)
         setupShopsRV()
         setupClickListeners()
 
@@ -76,17 +83,16 @@ class TaskFragment : Fragment() {
         }
 
         shopsAdapter.onItemClickListener = {
-            findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToShopFragment(it, categoriesList))
+            findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToShopFragment(it, categoriesList.toTypedArray(), null))
         }
     }
 
-    private fun setupCategoriesRV(){
+    private fun setupCategoriesRV(task: TaskItem){
         categoriesAdapter = RecyclerViewCategoriesAdapter()
         binding.recyclerViewCategories.adapter = categoriesAdapter
 
-        val task = args.task
         val listCategories = viewModel.getCategories(task).toList()
-        categoriesList = ListCategoriesItemTransfer(listCategories)
+        categoriesList = listCategories
         categoriesAdapter.submitList(listCategories)
 
     }

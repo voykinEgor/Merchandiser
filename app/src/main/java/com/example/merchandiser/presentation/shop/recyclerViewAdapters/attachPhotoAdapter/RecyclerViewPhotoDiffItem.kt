@@ -1,7 +1,6 @@
 package com.example.merchandiser.presentation.shop.recyclerViewAdapters.attachPhotoAdapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.merchandiser.data.models.transfer.CategoryItemTransfer
 import com.example.merchandiser.domain.Photo
 
 class RecyclerViewPhotoDiffItem: DiffUtil.ItemCallback<Photo>() {

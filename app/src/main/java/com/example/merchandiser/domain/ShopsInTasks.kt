@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class CategoryItem(
-    val id: Int,
-    val name: String
+data class ShopsInTasks(
+    val shopItem: ShopItem,
+    val category: List<CategoryInTasks>
 ): Parcelable

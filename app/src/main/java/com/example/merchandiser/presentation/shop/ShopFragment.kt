@@ -32,9 +32,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.merchandiser.LOG
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.R
-import com.example.merchandiser.data.models.transfer.CategoryItemTransfer
-import com.example.merchandiser.data.models.transfer.ShopItemTransfer
 import com.example.merchandiser.databinding.FragmentShopBinding
+import com.example.merchandiser.domain.CategoryItem
+import com.example.merchandiser.domain.ShopItem
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.attachPhotoAdapter.RecyclerViewPhotoAdapter
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.categoryItemAdapter.RecyclerViewItemCategoryAdapter
@@ -88,11 +88,11 @@ class ShopFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val shopItem = args.shopItem
-        val listCategories = args.categoryList?.items
+        val listCategories = args.categoryList
         if (listCategories != null){
             setupTextViews(shopItem, listCategories)
             setupClickListeners()
-            setupRecyclerViews(listCategories)
+            setupRecyclerViews(listCategories.toList())
             checkCameraPermission()
         }
 
@@ -106,19 +106,19 @@ class ShopFragment : Fragment() {
 
     }
 
-    private fun setupTextViews(shopItem: ShopItemTransfer, listCategories: List<CategoryItemTransfer>){
+    private fun setupTextViews(shopItem: ShopItem, listCategories: Array<CategoryItem>){
         binding.shopTextView.text = shopItem.name
         binding.addressTextView.text = "Адрес: ${shopItem.address}"
         binding.categoriesTextView.text = extractCategoriesName(listCategories)
     }
 
-    private fun extractCategoriesName(listCategories: List<CategoryItemTransfer>): String {
+    private fun extractCategoriesName(listCategories: Array<CategoryItem>): String {
         val categoryNames = listCategories.map { it.name.lowercase() }
         val categoriesString = categoryNames.joinToString(", ")
         return "Категории: $categoriesString"
     }
 
-    private fun setupRecyclerViews(listCategories: List<CategoryItemTransfer>){
+    private fun setupRecyclerViews(listCategories: List<CategoryItem>){
         categoriesAdapter = RecyclerViewItemCategoryAdapter()
         binding.recyclerViewCategories.adapter = categoriesAdapter
         categoriesAdapter.submitList(listCategories)
