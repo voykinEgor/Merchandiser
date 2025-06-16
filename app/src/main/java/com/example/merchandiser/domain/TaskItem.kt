@@ -4,6 +4,7 @@ data class TaskItem(
     val id: Int,
     val name: String,
     val date: String,
-    val setCategoriesId: Set<Int>,
-    val status:Int
+    val setCategoriesItems: Set<CategoryItem>,
+    val listShops: List<ShopItem>,
+    val status: Boolean
 )

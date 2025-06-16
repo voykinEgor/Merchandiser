@@ -1,7 +1,10 @@
 package com.example.merchandiser.domain.useCases
 
-class CompleteShopUseCase {
-    fun completeShop(shopId: Int){
+import com.example.merchandiser.domain.repositories.ShopRepository
+import javax.inject.Inject
 
-    }
+class CompleteShopUseCase @Inject constructor(
+    private val shopRepository: ShopRepository
+) {
+    fun completeShop(shopId: Int) = shopRepository.completeShop(shopId)
 }

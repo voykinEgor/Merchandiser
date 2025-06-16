@@ -1,8 +1,11 @@
 package com.example.merchandiser.domain.repositories
 
+import androidx.lifecycle.LiveData
+import com.google.gson.JsonElement
+
 interface AuthRepository {
 
-    fun auth(login: String, password: String)
+    suspend fun auth(login: String, password: String): Int?
 
     fun logout()
 }

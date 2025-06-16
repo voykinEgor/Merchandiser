@@ -1,7 +1,10 @@
 package com.example.merchandiser.domain.useCases
 
-class CompleteTaskUseCase {
-    fun completeTask(taskId: Int){
+import com.example.merchandiser.domain.repositories.TaskRepository
+import javax.inject.Inject
 
-    }
+class CompleteTaskUseCase @Inject constructor(
+    private val taskRepository: TaskRepository
+) {
+    suspend fun completeTask(taskId: Int) = taskRepository.completeTask(taskId)
 }
