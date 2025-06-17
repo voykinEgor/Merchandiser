@@ -20,25 +20,31 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.merchandiser.LOG
 import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentCameraBinding
 import com.example.merchandiser.databinding.FragmentShopBinding
+import com.example.merchandiser.domain.CategoryInTasks
+import com.example.merchandiser.domain.ShopsInTasks
 
 class CameraFragment : Fragment() {
 
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
 
+    private val args by navArgs<CameraFragmentArgs>()
 
     private lateinit var imageCapture: ImageCapture
+
+    private lateinit var shopInTaskItem: CategoryInTasks
 
     private val galleryOpen =
         registerForActivityResult(
             ActivityResultContracts.GetContent())
         { uri ->
             uri?.let {
-                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(it.toString()))
+                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(it.toString(), shopInTaskItem))
                 Log.d(LOG, "Uri picked in gallery: $it")
             }
         }
@@ -53,6 +59,7 @@ class CameraFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        shopInTaskItem = args.categoryInShop
         launchCameraCapture()
         setupClickListeners()
 
@@ -134,7 +141,7 @@ class CameraFragment : Fragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(output.savedUri.toString()))
+                    findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(output.savedUri.toString(), shopInTaskItem))
                     Log.d(LOG, "Photo capture succeeded: ${output.savedUri}")
                 }
             }

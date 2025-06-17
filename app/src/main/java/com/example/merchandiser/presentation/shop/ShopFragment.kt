@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.merchandiser.LOG
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentShopBinding
 import com.example.merchandiser.domain.CategoryInTasks
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopsInTasks
+import com.example.merchandiser.presentation.CameraFragmentDirections
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.categoryItemAdapter.RecyclerViewItemCategoryAdapter
 import javax.inject.Inject
@@ -44,6 +47,9 @@ class ShopFragment : Fragment() {
 
     private lateinit var categoriesAdapter: RecyclerViewItemCategoryAdapter
     private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>
+    private lateinit var shopInTaskItem: ShopsInTasks
+
+    private var permissionsGranted: Boolean = false
 
 
     override fun onAttach(context: Context) {
@@ -66,7 +72,7 @@ class ShopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val shopInTaskItem = args.shopItem
+        shopInTaskItem = args.shopItem
         val listCategories = shopInTaskItem.categories
 
         setupTextViews(shopInTaskItem, listCategories)
@@ -84,7 +90,10 @@ class ShopFragment : Fragment() {
 
     }
 
-    private fun setupTextViews(shopInTaskItem: ShopsInTasks, listCategories: List<CategoryInTasks>) {
+    private fun setupTextViews(
+        shopInTaskItem: ShopsInTasks,
+        listCategories: List<CategoryInTasks>
+    ) {
         binding.shopTextView.text = shopInTaskItem.shopItem.name
         binding.addressTextView.text = "Адрес: ${shopInTaskItem.shopItem.address}"
         binding.categoriesTextView.text = extractCategoriesName(listCategories.map { it.category })
@@ -101,8 +110,8 @@ class ShopFragment : Fragment() {
         binding.recyclerViewCategories.adapter = categoriesAdapter
         categoriesAdapter.submitList(listCategories)
 
-        categoriesAdapter.photoAdapter.onItemClickListener = {
-            checkAndLaunchCamera()
+        categoriesAdapter.onPhotoClick = { photo, category ->
+            checkAndLaunchCamera(category)
         }
     }
 
@@ -116,15 +125,15 @@ class ShopFragment : Fragment() {
             } else {
                 permissions[android.Manifest.permission.READ_EXTERNAL_STORAGE] == true
             }
-            if (cameraGranted && photoGranted) {
-                initialCamera()
+            permissionsGranted = if (cameraGranted && photoGranted) {
+                true
             } else {
-                checkAndLaunchCamera()
+                false
             }
         }
     }
 
-    fun checkAndLaunchCamera() {
+    fun checkAndLaunchCamera(category: CategoryInTasks) {
         val cameraPermission = android.Manifest.permission.CAMERA
         val photoPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             android.Manifest.permission.READ_MEDIA_IMAGES
@@ -150,14 +159,21 @@ class ShopFragment : Fragment() {
         }
 
         if (permissionsToRequest.isEmpty()) {
-            initialCamera()
+            permissionsGranted = true
+            initialCamera(category)
         } else {
+            permissionsGranted = false
             requestCameraPermissionLauncher.launch(permissionsToRequest.toTypedArray())
         }
     }
 
-    private fun initialCamera() {
-        findNavController().navigate(R.id.action_shopFragment_to_cameraFragment)
+    private fun initialCamera(category: CategoryInTasks) {
+        if (permissionsGranted)
+            findNavController().navigate(
+                ShopFragmentDirections.actionShopFragmentToCameraFragment(
+                    category
+                )
+            )
     }
 
 }

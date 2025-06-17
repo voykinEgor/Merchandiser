@@ -82,6 +82,9 @@
         <action
             android:id="@+id/action_cameraFragment_to_acceptPhotoFragment"
             app:destination="@id/acceptPhotoFragment" />
+        <argument
+            android:name="categoryInShop"
+            app:argType="com.example.merchandiser.domain.CategoryInTasks" />
     </fragment>
     <fragment
         android:id="@+id/acceptPhotoFragment"
@@ -94,5 +97,8 @@
         <argument
             android:name="uri"
             app:argType="string" />
+        <argument
+            android:name="categoryInShop"
+            app:argType="com.example.merchandiser.domain.CategoryInTasks" />
     </fragment>
 </navigation>

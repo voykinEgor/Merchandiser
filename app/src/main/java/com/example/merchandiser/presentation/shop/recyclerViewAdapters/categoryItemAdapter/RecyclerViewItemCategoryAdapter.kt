@@ -1,16 +1,13 @@
 package com.example.merchandiser.presentation.shop.recyclerViewAdapters.categoryItemAdapter
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.ListAdapter
 import com.example.merchandiser.R
+import com.example.merchandiser.domain.CategoryInTasks
 import com.example.merchandiser.domain.Photo
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.attachPhotoAdapter.RecyclerViewPhotoAdapter
-import java.net.URI
-import androidx.core.net.toUri
-import com.example.merchandiser.domain.CategoryInTasks
-import com.example.merchandiser.domain.CategoryItem
 
 
 class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryInTasks, RecyclerViewItemCategoryHolder>(
@@ -19,7 +16,7 @@ class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryInTasks, RecyclerView
 
     val listPhotos: ArrayList<Photo> = arrayListOf(Photo(0, "".toUri()), Photo(1, "".toUri()), Photo(2, "".toUri()), Photo(3, "".toUri()), Photo(4, "".toUri()))
 
-    val photoAdapter = RecyclerViewPhotoAdapter()
+    var onPhotoClick: ((Photo, CategoryInTasks) -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -29,17 +26,23 @@ class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryInTasks, RecyclerView
         return RecyclerViewItemCategoryHolder(view)
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerViewItemCategoryHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: RecyclerViewItemCategoryHolder, position: Int) {
+        val category = getItem(position)
+
+        val photoAdapter = RecyclerViewPhotoAdapter()
+        photoAdapter.setCurrentCategory(category)
+
+        photoAdapter.onItemClickListener = { photo, cat ->
+            onPhotoClick?.invoke(photo, cat)
+        }
 
         holder.photosRV.adapter = photoAdapter
         photoAdapter.submitList(listPhotos)
-        val category = getItem(position)
+
         holder.shopName.text = formatCategory(category.category.name)
         holder.countPhoto.text = "0"
     }
+
 
     private fun formatCategory(category: String): String{
         return "$category: "
