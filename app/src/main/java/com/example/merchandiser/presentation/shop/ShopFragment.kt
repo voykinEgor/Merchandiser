@@ -1,53 +1,35 @@
 package com.example.merchandiser.presentation.shop
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
-import androidx.appcompat.app.AlertDialog
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.RecyclerView
-import com.example.merchandiser.LOG
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentShopBinding
+import com.example.merchandiser.domain.CategoryInTasks
 import com.example.merchandiser.domain.CategoryItem
-import com.example.merchandiser.domain.ShopItem
+import com.example.merchandiser.domain.ShopsInTasks
 import com.example.merchandiser.presentation.ViewModelFactory
-import com.example.merchandiser.presentation.shop.recyclerViewAdapters.attachPhotoAdapter.RecyclerViewPhotoAdapter
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.categoryItemAdapter.RecyclerViewItemCategoryAdapter
-import java.util.jar.Manifest
 import javax.inject.Inject
-import kotlin.getValue
 
 class ShopFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private val viewModel by lazy{
+    private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[ShopViewModel::class.java]
     }
 
@@ -62,9 +44,6 @@ class ShopFragment : Fragment() {
 
     private lateinit var categoriesAdapter: RecyclerViewItemCategoryAdapter
     private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>
-
-
-
 
 
     override fun onAttach(context: Context) {
@@ -87,38 +66,37 @@ class ShopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val shopItem = args.shopItem
-        val listCategories = args.categoryList
-        if (listCategories != null){
-            setupTextViews(shopItem, listCategories)
-            setupClickListeners()
-            setupRecyclerViews(listCategories.toList())
-            checkCameraPermission()
-        }
+        val shopInTaskItem = args.shopItem
+        val listCategories = shopInTaskItem.categories
+
+        setupTextViews(shopInTaskItem, listCategories)
+        setupClickListeners()
+        setupRecyclerViews(listCategories)
+        checkCameraPermission()
 
 
     }
 
-    private fun setupClickListeners(){
+    private fun setupClickListeners() {
         binding.backImageView.setOnClickListener {
             findNavController().popBackStack()
         }
 
     }
 
-    private fun setupTextViews(shopItem: ShopItem, listCategories: Array<CategoryItem>){
-        binding.shopTextView.text = shopItem.name
-        binding.addressTextView.text = "Адрес: ${shopItem.address}"
-        binding.categoriesTextView.text = extractCategoriesName(listCategories)
+    private fun setupTextViews(shopInTaskItem: ShopsInTasks, listCategories: List<CategoryInTasks>) {
+        binding.shopTextView.text = shopInTaskItem.shopItem.name
+        binding.addressTextView.text = "Адрес: ${shopInTaskItem.shopItem.address}"
+        binding.categoriesTextView.text = extractCategoriesName(listCategories.map { it.category })
     }
 
-    private fun extractCategoriesName(listCategories: Array<CategoryItem>): String {
+    private fun extractCategoriesName(listCategories: List<CategoryItem>): String {
         val categoryNames = listCategories.map { it.name.lowercase() }
         val categoriesString = categoryNames.joinToString(", ")
         return "Категории: $categoriesString"
     }
 
-    private fun setupRecyclerViews(listCategories: List<CategoryItem>){
+    private fun setupRecyclerViews(listCategories: List<CategoryInTasks>) {
         categoriesAdapter = RecyclerViewItemCategoryAdapter()
         binding.recyclerViewCategories.adapter = categoriesAdapter
         categoriesAdapter.submitList(listCategories)
@@ -156,10 +134,18 @@ class ShopFragment : Fragment() {
 
         val permissionsToRequest = mutableListOf<String>()
 
-        if (ContextCompat.checkSelfPermission(requireActivity(), photoPermission) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                photoPermission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             permissionsToRequest.add(photoPermission)
         }
-        if (ContextCompat.checkSelfPermission(requireActivity(), cameraPermission) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                cameraPermission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             permissionsToRequest.add(cameraPermission)
         }
 

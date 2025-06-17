@@ -2,18 +2,19 @@ package com.example.merchandiser.presentation.task.recyclerViewAdapters.shops
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.merchandiser.domain.ShopItem
+import com.example.merchandiser.domain.ShopsInTasks
 
-class RecyclerViewShopsDiffItem: DiffUtil.ItemCallback<ShopItem>() {
+class RecyclerViewShopsDiffItem: DiffUtil.ItemCallback<ShopsInTasks>() {
     override fun areItemsTheSame(
-        oldItem: ShopItem,
-        newItem: ShopItem
+        oldItem: ShopsInTasks,
+        newItem: ShopsInTasks
     ): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.shopItem.id == newItem.shopItem.id
     }
 
     override fun areContentsTheSame(
-        oldItem: ShopItem,
-        newItem: ShopItem
+        oldItem: ShopsInTasks,
+        newItem: ShopsInTasks
     ): Boolean {
         return oldItem == newItem
     }

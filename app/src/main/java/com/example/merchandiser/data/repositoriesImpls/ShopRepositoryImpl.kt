@@ -3,6 +3,7 @@ package com.example.merchandiser.data.repositoriesImpls
 import android.net.Uri
 import com.example.merchandiser.data.mappers.ShopMapper
 import com.example.merchandiser.domain.ShopItem
+import com.example.merchandiser.domain.ShopsInTasks
 import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.domain.repositories.ShopRepository
 import javax.inject.Inject
@@ -18,8 +19,8 @@ class ShopRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getShopList(taskItem: TaskItem): List<ShopItem> {
-        return shopMapper.mapShopsInTasksToListShops(taskItem.listShopsAndCategories)
+    override fun getShopsAndCategoriesList(taskItem: TaskItem): List<ShopsInTasks> {
+        return taskItem.listShopsAndCategories
     }
 
     override fun addPhoto(photoUri: Uri) {

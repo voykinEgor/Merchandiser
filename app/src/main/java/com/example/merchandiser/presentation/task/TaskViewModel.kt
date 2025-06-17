@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.merchandiser.data.mappers.ShopMapper
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopItem
+import com.example.merchandiser.domain.ShopsInTasks
 import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.domain.useCases.GetCategoriesSetUseCase
 import com.example.merchandiser.domain.useCases.GetShopListUseCase
@@ -18,7 +19,13 @@ class TaskViewModel @Inject constructor(
         return getCategoriesSetUseCase.getCategoriesSet(taskItem)
     }
 
-    fun getShops(taskItem: TaskItem): List<ShopItem>{
+    fun getShops(taskItem: TaskItem): List<ShopsInTasks>{
         return getShopListUseCase.getShopList(taskItem)
     }
+
+    fun getShopList(shopsInTasks: List<ShopsInTasks>): List<ShopItem>{
+        return shopsInTasks.map { it.shopItem }
+    }
+
+
 }

@@ -6,5 +6,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ShopsInTasks(
     val shopItem: ShopItem,
-    val category: List<CategoryInTasks>
+    val categories: List<CategoryInTasks>
 ): Parcelable

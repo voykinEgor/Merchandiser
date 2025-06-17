@@ -36,13 +36,6 @@
         android:name="com.example.merchandiser.presentation.shop.ShopFragment"
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" >
-        <argument
-            android:name="shopItem"
-            app:argType="com.example.merchandiser.domain.ShopItem" />
-        <argument
-            android:name="categoryList"
-            app:argType="com.example.merchandiser.domain.CategoryItem[]"
-            app:nullable="true" />
         <action
             android:id="@+id/action_shopFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
@@ -50,6 +43,9 @@
             android:name="photoUri"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="shopItem"
+            app:argType="com.example.merchandiser.domain.ShopsInTasks" />
     </fragment>
     <fragment
         android:id="@+id/taskFragment"

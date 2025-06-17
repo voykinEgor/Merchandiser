@@ -43,6 +43,8 @@ class TaskFragment : Fragment() {
     private lateinit var categoriesList: List<CategoryItem>
 
     private lateinit var taskItem: TaskItem
+    private lateinit var shopsInTasksList: List<ShopsInTasks>
+
 
 
 
@@ -63,7 +65,7 @@ class TaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         taskItem = args.task
         binding.merchTextView.text = taskItem.name
-
+        shopsInTasksList = viewModel.getShops(taskItem)
         setupCategoriesRV(taskItem)
         setupShopsRV()
         setupClickListeners()
@@ -82,8 +84,8 @@ class TaskFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        shopsAdapter.onItemClickListener = {
-            findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToShopFragment(it, categoriesList.toTypedArray(), null))
+        shopsAdapter.onItemClickListener = {shopInTask ->
+            findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToShopFragment(null, shopInTask))
         }
     }
 
@@ -100,10 +102,6 @@ class TaskFragment : Fragment() {
     private fun setupShopsRV(){
         shopsAdapter = RecyclerViewShopsAdapter()
         binding.recyclerViewShops.adapter = shopsAdapter
-
-        val task = args.task
-        val listShops = viewModel.getShops(task)
-        shopsAdapter.submitList(listShops)
-
+        shopsAdapter.submitList(shopsInTasksList)
     }
 }

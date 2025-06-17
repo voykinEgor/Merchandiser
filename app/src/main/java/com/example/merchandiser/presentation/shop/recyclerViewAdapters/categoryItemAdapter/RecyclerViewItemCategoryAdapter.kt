@@ -9,10 +9,11 @@ import com.example.merchandiser.domain.Photo
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.attachPhotoAdapter.RecyclerViewPhotoAdapter
 import java.net.URI
 import androidx.core.net.toUri
+import com.example.merchandiser.domain.CategoryInTasks
 import com.example.merchandiser.domain.CategoryItem
 
 
-class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryItem, RecyclerViewItemCategoryHolder>(
+class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryInTasks, RecyclerViewItemCategoryHolder>(
     RecyclerViewItemCategoryDiffItem()
 ) {
 
@@ -36,7 +37,7 @@ class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryItem, RecyclerViewIte
         holder.photosRV.adapter = photoAdapter
         photoAdapter.submitList(listPhotos)
         val category = getItem(position)
-        holder.shopName.text = formatCategory(category.name)
+        holder.shopName.text = formatCategory(category.category.name)
         holder.countPhoto.text = "0"
     }
 
