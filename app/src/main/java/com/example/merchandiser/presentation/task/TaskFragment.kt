@@ -85,7 +85,7 @@ class TaskFragment : Fragment() {
         }
 
         shopsAdapter.onItemClickListener = {shopInTask ->
-            findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToShopFragment(null, shopInTask))
+            findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToShopFragment(shopInTask))
         }
     }
 

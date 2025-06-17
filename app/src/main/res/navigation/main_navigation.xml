@@ -40,10 +40,6 @@
             android:id="@+id/action_shopFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
         <argument
-            android:name="photoUri"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
             android:name="shopItem"
             app:argType="com.example.merchandiser.domain.ShopsInTasks" />
     </fragment>
@@ -85,6 +81,9 @@
         <argument
             android:name="categoryInShop"
             app:argType="com.example.merchandiser.domain.CategoryInTasks" />
+        <argument
+            android:name="shopsInTasks"
+            app:argType="com.example.merchandiser.domain.ShopsInTasks" />
     </fragment>
     <fragment
         android:id="@+id/acceptPhotoFragment"
@@ -100,5 +99,8 @@
         <argument
             android:name="categoryInShop"
             app:argType="com.example.merchandiser.domain.CategoryInTasks" />
+        <argument
+            android:name="shopsInTasks"
+            app:argType="com.example.merchandiser.domain.ShopsInTasks" />
     </fragment>
 </navigation>

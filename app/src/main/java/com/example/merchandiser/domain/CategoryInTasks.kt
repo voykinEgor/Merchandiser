@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class CategoryInTasks(
     val category: CategoryItem,
-    val uriList: List<Uri>? = null
+    var uriList: MutableList<Uri>? = null
 ): Parcelable

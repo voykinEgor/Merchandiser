@@ -74,7 +74,7 @@ class ShopFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         shopInTaskItem = args.shopItem
         val listCategories = shopInTaskItem.categories
-
+        Log.d(LOG, "List Categories: $listCategories")
         setupTextViews(shopInTaskItem, listCategories)
         setupClickListeners()
         setupRecyclerViews(listCategories)
@@ -171,7 +171,8 @@ class ShopFragment : Fragment() {
         if (permissionsGranted)
             findNavController().navigate(
                 ShopFragmentDirections.actionShopFragmentToCameraFragment(
-                    category
+                    category,
+                    shopInTaskItem
                 )
             )
     }

@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentAcceptPhotoBinding
+import com.example.merchandiser.domain.CategoryInTasks
+import com.example.merchandiser.domain.ShopItem
 import com.example.merchandiser.domain.ShopsInTasks
+import com.example.merchandiser.presentation.shop.ShopFragmentDirections
 
 
 class AcceptPhotoFragment : Fragment() {
@@ -21,7 +23,8 @@ class AcceptPhotoFragment : Fragment() {
 
     private val args by navArgs<AcceptPhotoFragmentArgs>()
 
-//    private lateinit var shopInTaskItem: ShopsInTasks
+    private lateinit var categoryInTaskItem: CategoryInTasks
+    private lateinit var shopInTaskItem: ShopsInTasks
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,15 +42,31 @@ class AcceptPhotoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val photoUri = args.uri.toUri()
-//        shopInTaskItem = args.shopsInTasks
+        categoryInTaskItem = args.categoryInShop
+        shopInTaskItem = args.shopsInTasks
         binding.photoImageView.setImageURI(photoUri)
 
         binding.acceptButton.setOnClickListener {
-//            findNavController().navigate()
+            insertPhotoToList(photoUri, categoryInTaskItem)
+            val updatedShopItem = updateShopsInTasks(shopInTaskItem, categoryInTaskItem)
+            findNavController().navigate(AcceptPhotoFragmentDirections.actionAcceptPhotoFragmentToShopFragment(updatedShopItem))
+        }
+
+        binding.declineButton.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
-//    fun insertPhotoToList(photoUri: Uri, shopInTaskItem: ShopsInTasks){
-//        val
-//    }
+    fun insertPhotoToList(photoUri: Uri, categoryInTaskItem: CategoryInTasks) {
+        categoryInTaskItem.uriList?.add(photoUri) ?: run {
+            categoryInTaskItem.uriList = mutableListOf(photoUri)
+        }
+    }
+
+    fun updateShopsInTasks(shopInTaskItem: ShopsInTasks, updatedCategory: CategoryInTasks): ShopsInTasks{
+        val updatedCategories = shopInTaskItem.categories.map {categoryInTask ->
+            if(categoryInTask.category.id == updatedCategory.category.id) updatedCategory else categoryInTask
+        }
+        return shopInTaskItem.copy(categories = updatedCategories)
+    }
 }
