@@ -3,6 +3,7 @@ package com.example.merchandiser.presentation.shop.recyclerViewAdapters.attachPh
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.ListAdapter
 import com.example.merchandiser.R
 import com.example.merchandiser.domain.CategoryInTasks
@@ -17,6 +18,14 @@ class RecyclerViewPhotoAdapter: ListAdapter<Photo, RecyclerViewPhotoHolder>(
 
     fun setCurrentCategory(category: CategoryInTasks) {
         currentCategory = category
+
+        val photosList = mutableListOf<Photo>()
+        photosList.add(Photo(0, "".toUri()))
+        category.uriList?.forEachIndexed { index, uri ->
+            photosList.add(Photo(index+1, uri))
+        }
+
+        submitList(photosList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewPhotoHolder {

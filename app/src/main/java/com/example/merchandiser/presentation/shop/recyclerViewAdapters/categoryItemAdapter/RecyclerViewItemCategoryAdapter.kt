@@ -14,7 +14,7 @@ class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryInTasks, RecyclerView
     RecyclerViewItemCategoryDiffItem()
 ) {
 
-    val listPhotos: ArrayList<Photo> = arrayListOf(Photo(0, "".toUri()), Photo(1, "".toUri()), Photo(2, "".toUri()), Photo(3, "".toUri()), Photo(4, "".toUri()))
+    var listPhotos: ArrayList<Photo> = arrayListOf(Photo(0, "".toUri()))
 
     var onPhotoClick: ((Photo, CategoryInTasks) -> Unit)? = null
 
@@ -37,10 +37,9 @@ class RecyclerViewItemCategoryAdapter: ListAdapter<CategoryInTasks, RecyclerView
         }
 
         holder.photosRV.adapter = photoAdapter
-        photoAdapter.submitList(listPhotos)
 
         holder.shopName.text = formatCategory(category.category.name)
-        holder.countPhoto.text = "0"
+        holder.countPhoto.text = "${category.uriList?.size ?: 0}"
     }
 
 

@@ -83,6 +83,14 @@ class ShopFragment : Fragment() {
 
     }
 
+    private fun showPhoto(listCategoryInTasks: List<CategoryInTasks>){
+        for (category in listCategoryInTasks){
+            if (category.uriList != null){
+
+            }
+        }
+    }
+
     private fun setupClickListeners() {
         binding.backImageView.setOnClickListener {
             findNavController().popBackStack()
