@@ -13,6 +13,7 @@ import com.example.merchandiser.databinding.FragmentAcceptPhotoBinding
 import com.example.merchandiser.domain.CategoryInTasks
 import com.example.merchandiser.domain.ShopItem
 import com.example.merchandiser.domain.ShopsInTasks
+import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.presentation.shop.ShopFragmentDirections
 
 
@@ -25,6 +26,10 @@ class AcceptPhotoFragment : Fragment() {
 
     private lateinit var categoryInTaskItem: CategoryInTasks
     private lateinit var shopInTaskItem: ShopsInTasks
+
+    private val taskItem: TaskItem by lazy {
+        args.taskItem
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +54,7 @@ class AcceptPhotoFragment : Fragment() {
         binding.acceptButton.setOnClickListener {
             insertPhotoToList(photoUri, categoryInTaskItem)
             val updatedShopItem = updateShopsInTasks(shopInTaskItem, categoryInTaskItem)
-            findNavController().navigate(AcceptPhotoFragmentDirections.actionAcceptPhotoFragmentToShopFragment(updatedShopItem))
+            findNavController().navigate(AcceptPhotoFragmentDirections.actionAcceptPhotoFragmentToShopFragment(updatedShopItem, taskItem))
         }
 
         binding.declineButton.setOnClickListener {

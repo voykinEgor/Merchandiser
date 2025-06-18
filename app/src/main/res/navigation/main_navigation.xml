@@ -42,6 +42,12 @@
         <argument
             android:name="shopItem"
             app:argType="com.example.merchandiser.domain.ShopsInTasks" />
+        <argument
+            android:name="taskItem"
+            app:argType="com.example.merchandiser.domain.TaskItem" />
+        <action
+            android:id="@+id/action_shopFragment_to_taskFragment"
+            app:destination="@id/taskFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskFragment"
@@ -84,6 +90,9 @@
         <argument
             android:name="shopsInTasks"
             app:argType="com.example.merchandiser.domain.ShopsInTasks" />
+        <argument
+            android:name="taskItem"
+            app:argType="com.example.merchandiser.domain.TaskItem" />
     </fragment>
     <fragment
         android:id="@+id/acceptPhotoFragment"
@@ -102,5 +111,8 @@
         <argument
             android:name="shopsInTasks"
             app:argType="com.example.merchandiser.domain.ShopsInTasks" />
+        <argument
+            android:name="taskItem"
+            app:argType="com.example.merchandiser.domain.TaskItem" />
     </fragment>
 </navigation>

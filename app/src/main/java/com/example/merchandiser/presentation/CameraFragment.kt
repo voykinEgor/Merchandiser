@@ -22,6 +22,7 @@ import com.example.merchandiser.LOG
 import com.example.merchandiser.databinding.FragmentCameraBinding
 import com.example.merchandiser.domain.CategoryInTasks
 import com.example.merchandiser.domain.ShopsInTasks
+import com.example.merchandiser.domain.TaskItem
 
 class CameraFragment : Fragment() {
 
@@ -35,12 +36,16 @@ class CameraFragment : Fragment() {
     private lateinit var categoryInTaskItem: CategoryInTasks
     private lateinit var shopInTaskItem: ShopsInTasks
 
+    private val taskItem: TaskItem by lazy {
+        args.taskItem
+    }
+
     private val galleryOpen =
         registerForActivityResult(
             ActivityResultContracts.GetContent())
         { uri ->
             uri?.let {
-                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(it.toString(), categoryInTaskItem, shopInTaskItem))
+                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(it.toString(), categoryInTaskItem, shopInTaskItem, taskItem))
                 Log.d(LOG, "Uri picked in gallery: $it")
             }
         }
@@ -138,7 +143,7 @@ class CameraFragment : Fragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(output.savedUri.toString(), categoryInTaskItem, shopInTaskItem))
+                    findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(output.savedUri.toString(), categoryInTaskItem, shopInTaskItem, taskItem))
                     Log.d(LOG, "Photo capture succeeded: ${output.savedUri}")
                 }
             }

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,9 +23,12 @@ import com.example.merchandiser.databinding.FragmentShopBinding
 import com.example.merchandiser.domain.CategoryInTasks
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopsInTasks
+import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.presentation.CameraFragmentDirections
+import com.example.merchandiser.presentation.Error
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.categoryItemAdapter.RecyclerViewItemCategoryAdapter
+import com.example.merchandiser.presentation.task.TaskFragmentDirections
 import javax.inject.Inject
 
 class ShopFragment : Fragment() {
@@ -50,6 +54,14 @@ class ShopFragment : Fragment() {
     private lateinit var shopInTaskItem: ShopsInTasks
 
     private var permissionsGranted: Boolean = false
+
+    private val taskId: Int by lazy {
+        args.taskItem.id
+    }
+
+    private val taskItem: TaskItem by lazy {
+        args.taskItem
+    }
 
 
     override fun onAttach(context: Context) {
@@ -83,20 +95,72 @@ class ShopFragment : Fragment() {
 
     }
 
-    private fun showPhoto(listCategoryInTasks: List<CategoryInTasks>){
-        for (category in listCategoryInTasks){
-            if (category.uriList != null){
-
-            }
-        }
-    }
-
     private fun setupClickListeners() {
         binding.backImageView.setOnClickListener {
             findNavController().popBackStack()
         }
 
+        binding.nextButton.setOnClickListener {
+//            Log.d(LOG, "Task:  ShopItemId: ${shopInTaskItem.shopItem.id} \n ShopItem: ${shopInTaskItem.categories}")
+            sendPhotos()
+        }
     }
+
+    private fun sendPhotos(){
+        val categoryData = shopInTaskItem.categories.mapNotNull { category ->
+            category.uriList?.let { uris -> category.category.id to uris.toList() }
+        }
+
+        viewModel.completeShop(taskId, shopInTaskItem.shopItem.id, categoryData)
+
+        viewModel.loadingState.observe(viewLifecycleOwner) {isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
+            if (isLoading){
+                binding.nextButton.backgroundTintList = requireContext().getColorStateList(R.color.disactivated_color)
+            }else{
+                binding.nextButton.backgroundTintList = requireContext().getColorStateList(R.color.hint_color)
+            }
+            binding.nextButton.isEnabled = !isLoading
+        }
+
+        viewModel.loadingStateList.observe(viewLifecycleOwner) {stateList ->
+            val errorMessages = stateList.filterIsInstance<Error>().map { it.message }
+            if (errorMessages.isNotEmpty()) {
+                showErrorDialog(errorMessages)
+            }else{
+                if (categoryData.isEmpty()){
+                    showErrorDialog(listOf("Загрузите хотя бы одну фотографию"))
+                }else{
+                    showSuccessDialog()
+                }
+
+            }
+        }
+    }
+
+    private fun showSuccessDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Успешно")
+            .setMessage("Все данные были успешно отправлены.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                findNavController().navigate(ShopFragmentDirections.actionShopFragmentToTaskFragment(taskItem))
+            }
+            .show()
+    }
+
+    private fun showErrorDialog(errorMessages: List<String>) {
+        val message = errorMessages.joinToString("\n") { "• $it" }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Произошли ошибки")
+            .setMessage(message)
+            .setPositiveButton("ОК") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
 
     private fun setupTextViews(
         shopInTaskItem: ShopsInTasks,
@@ -180,7 +244,8 @@ class ShopFragment : Fragment() {
             findNavController().navigate(
                 ShopFragmentDirections.actionShopFragmentToCameraFragment(
                     category,
-                    shopInTaskItem
+                    shopInTaskItem,
+                    taskItem
                 )
             )
     }
