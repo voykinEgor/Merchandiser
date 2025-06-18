@@ -61,10 +61,10 @@ class MainMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences(USER_ID, Context.MODE_PRIVATE)
-        val args = MainMenuFragmentArgs.fromBundle(requireArguments())
+        val userId = sharedPreferences.getInt(USER_ID, -1)
         rvAdapter = RecyclerViewAdapter()
         binding.recyclerViewTasks.adapter = rvAdapter
-        showTasksList(args.userId)
+        showTasksList(userId)
 
         binding.logoutImageView.setOnClickListener {
             logout()

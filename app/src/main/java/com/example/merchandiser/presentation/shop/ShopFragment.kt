@@ -141,11 +141,7 @@ class ShopFragment : Fragment() {
             .setMessage("Все данные были успешно отправлены.")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
-                findNavController().navigate(
-                    ShopFragmentDirections.actionShopFragmentToTaskFragment(
-                        taskItem
-                    )
-                )
+                findNavController().navigate(R.id.action_shopFragment_to_mainMenuFragment2)
             }
             .show()
     }

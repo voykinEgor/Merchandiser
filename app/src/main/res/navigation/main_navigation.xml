@@ -50,8 +50,8 @@
             android:name="taskItem"
             app:argType="com.example.merchandiser.domain.TaskItem" />
         <action
-            android:id="@+id/action_shopFragment_to_taskFragment"
-            app:destination="@id/taskFragment" />
+            android:id="@+id/action_shopFragment_to_mainMenuFragment2"
+            app:destination="@id/mainMenuFragment2" />
     </fragment>
     <fragment
         android:id="@+id/taskFragment"
@@ -77,9 +77,6 @@
         <action
             android:id="@+id/action_mainMenuFragment2_to_customTaskFragment"
             app:destination="@id/customTaskFragment" />
-        <argument
-            android:name="userId"
-            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.merchandiser.MerchApp
+import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentAuthBinding
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.mainMenu.MainMenuViewModel
@@ -62,11 +63,7 @@ class AuthFragment : Fragment() {
         sharedPreferences = requireContext().getSharedPreferences(USER_ID, Context.MODE_PRIVATE)
 
         if (sharedPreferences.contains(USER_ID)){
-            findNavController().navigate(
-                AuthFragmentDirections.actionAuthFragmentToMainMenuFragment2(
-                    sharedPreferences.getInt(USER_ID, 0)
-                )
-            )
+            findNavController().navigate(R.id.action_authFragment_to_mainMenuFragment2)
         }
 
         binding.authButton.setOnClickListener {
@@ -84,11 +81,7 @@ class AuthFragment : Fragment() {
                     putInt(USER_ID, it)
                     apply()
                 }
-                findNavController().navigate(
-                    AuthFragmentDirections.actionAuthFragmentToMainMenuFragment2(
-                        it
-                    )
-                )
+                findNavController().navigate(R.id.action_authFragment_to_mainMenuFragment2)
             }
         }
 
