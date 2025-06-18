@@ -3,29 +3,23 @@ package com.example.merchandiser.presentation.mainMenu
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.merchandiser.LOG
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentMainMenuBinding
-import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.presentation.ViewModelFactory
-import com.example.merchandiser.presentation.customTask.CustomTaskFragmentDirections
 import com.example.merchandiser.presentation.mainMenu.recyclerViewAdapters.RecyclerViewAdapter
-import com.google.android.gms.tasks.Task
 import javax.inject.Inject
-import kotlin.math.log
 
 class MainMenuFragment : Fragment() {
 
     companion object{
-        private const val USER_ID = "FDSFDS"
+        private const val USER_ID = "FDSFDS" //TODO: Исправить на понятную строку. ТАК НЕ ДЕЛАТЬ
     }
 
     private var _binding: FragmentMainMenuBinding? = null

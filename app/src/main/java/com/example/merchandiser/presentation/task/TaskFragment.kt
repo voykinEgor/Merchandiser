@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.merchandiser.MerchApp
+import com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer
 import com.example.merchandiser.databinding.FragmentTaskBinding
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopsInTasks
@@ -46,6 +47,7 @@ class TaskFragment : Fragment() {
     private lateinit var shopsInTasksList: List<ShopsInTasks>
 
 
+    private lateinit var connectivityManager: ConnectivityManager
 
 
     override fun onAttach(context: Context) {
@@ -67,6 +69,12 @@ class TaskFragment : Fragment() {
         binding.merchTextView.text = taskItem.name
         shopsInTasksList = viewModel.getShops(taskItem)
         setupCategoriesRV(taskItem)
+
+        connectivityManager =
+            requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        getLocatePermission()
+
+        setupCategoriesRV()
         setupShopsRV()
         setupClickListeners()
 
@@ -84,9 +92,44 @@ class TaskFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        shopsAdapter.onItemClickListener = {
+            findNavController().navigate(
+                TaskFragmentDirections.actionTaskFragmentToShopFragment(
+                    it,
+                    taskItem
+                )
+            )
+        }
+
+        binding.mapActionButton.setOnClickListener {
+            val task = args.task
+            val listShops = viewModel.getShops(task)
+            if (listShops.isNotEmpty()) {
+                if (isInternetAvailable(connectivityManager)) {
+                    findNavController().navigate(
+                        TaskFragmentDirections.actionTaskFragmentToMapFragment(
+                            listShops.toTypedArray()
+                        )
+                    )
+                } else {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Нет подключения к интернету",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                findNavController().navigate(
+                    TaskFragmentDirections.actionTaskFragmentToMapFragment(null)
+                )
+                Toast.makeText(requireActivity(), "Данные еще не загружены", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
         shopsAdapter.onItemClickListener = {shopInTask ->
             findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToShopFragment(shopInTask, taskItem))
         }
+    }
     }
 
     private fun setupCategoriesRV(task: TaskItem){
@@ -103,5 +146,46 @@ class TaskFragment : Fragment() {
         shopsAdapter = RecyclerViewShopsAdapter()
         binding.recyclerViewShops.adapter = shopsAdapter
         shopsAdapter.submitList(shopsInTasksList)
+
+        val task = args.task
+        val listShops = viewModel.getShops(task)
+        shopsAdapter.submitList(listShops)
+
+    }
+
+    private fun getLocatePermission() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
+        }
+    }
+
+    private fun checkGPSandInetEnabled(): Boolean {
+        val locationManager =
+            requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
+
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        if (!isGpsEnabled && !isNetworkEnabled) {
+            Toast.makeText(
+                requireActivity(),
+                "Местоположение отключено. Пожалуйста, включите его.",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        } else {
+            return true
+        }
     }
 }
