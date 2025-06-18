@@ -23,7 +23,7 @@
             app:destination="@id/shopFragment" />
         <argument
             android:name="points"
-            app:argType="com.example.merchandiser.data.models.transfer.ShopItemTransfer[]"
+            app:argType="com.example.merchandiser.domain.ShopItem[]"
             app:nullable="true" />
     </fragment>
     <fragment

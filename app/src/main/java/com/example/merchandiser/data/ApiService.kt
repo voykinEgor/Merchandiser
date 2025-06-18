@@ -7,8 +7,8 @@ import com.example.merchandiser.data.models.TaskItemDto
 import com.example.merchandiser.data.models.UserDto
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopItem
-import com.example.merchandiser.domain.TaskItem
 import okhttp3.MultipartBody
+import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -45,7 +45,7 @@ interface ApiService {
         @Path("categoryId") categoryId: Int,
         @Query("status") status: Boolean,
         @Part photo: List<MultipartBody.Part>
-    ): Response<String>
+    ): Response<JSONObject>
 
     suspend fun getShopItem(shopId: Int): Response<ShopItem>
 

@@ -69,7 +69,8 @@ class ShopRepositoryImpl @Inject constructor(
 
         Log.d(LOG, "Before Response")
         val response = apiService.completeShop(taskId, shopId, categoryId, false, photoParts)
-        Log.d(LOG, "After Response")
+        Log.d(LOG, "After Response ${response.raw()}")
+
         if (response.isSuccessful) {
             emit(Success("Данные сохранены"))
             Log.d(LOG, "Успешно отправлено: ${response.body()}")

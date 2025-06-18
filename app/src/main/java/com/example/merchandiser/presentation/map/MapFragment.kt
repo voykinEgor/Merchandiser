@@ -23,8 +23,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.merchandiser.LOG
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.R
-import com.example.merchandiser.data.models.transfer.ShopItemTransfer
 import com.example.merchandiser.databinding.FragmentMapBinding
+import com.example.merchandiser.domain.ShopItem
 import com.example.merchandiser.domain.nearestNeighbor.NearestNeighborHamiltonianPath
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.yandex.mapkit.Animation
@@ -218,7 +218,7 @@ class MapFragment : Fragment() {
 
     private fun viewModelWithTask(
         pointsList: ArrayList<Point>,
-        points: Array<ShopItemTransfer>,
+        points: Array<ShopItem>,
         userLocation: Point
     ) {
 //        binding.textViewInstruction.visibility = View.INVISIBLE
@@ -325,7 +325,7 @@ class MapFragment : Fragment() {
         )
     }
 
-    private fun addPointsToMap(points: List<Point>, pointsEntityList: Array<ShopItemTransfer>) {
+    private fun addPointsToMap(points: List<Point>, pointsEntityList: Array<ShopItem>) {
         for (i in 0 until points.size) {
             val placemark = mapObjects.addPlacemark(points[i])
             placemark.setIcon(

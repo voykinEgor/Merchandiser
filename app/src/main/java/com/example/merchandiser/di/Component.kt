@@ -3,6 +3,7 @@ package com.example.merchandiser.di
 import android.app.Application
 import com.example.merchandiser.presentation.auth.AuthFragment
 import com.example.merchandiser.presentation.mainMenu.MainMenuFragment
+import com.example.merchandiser.presentation.map.MapFragment
 import com.example.merchandiser.presentation.shop.ShopFragment
 import com.example.merchandiser.presentation.task.TaskFragment
 import dagger.BindsInstance
@@ -19,6 +20,8 @@ interface Component {
     fun inject(fragment: TaskFragment)
 
     fun inject(fragment: ShopFragment)
+
+    fun inject(fragment: MapFragment)
 
     @Component.Factory
     interface Factory {

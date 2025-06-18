@@ -1,20 +1,27 @@
 package com.example.merchandiser.presentation.task
 
+import android.Manifest
 import android.content.Context
+import android.content.Context.LOCATION_SERVICE
+import android.content.pm.PackageManager
+import android.location.LocationManager
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.merchandiser.MerchApp
-import com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer
 import com.example.merchandiser.databinding.FragmentTaskBinding
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopsInTasks
 import com.example.merchandiser.domain.TaskItem
+import com.example.merchandiser.isInternetAvailable
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.task.recyclerViewAdapters.categories.RecyclerViewCategoriesAdapter
 import com.example.merchandiser.presentation.task.recyclerViewAdapters.shops.RecyclerViewShopsAdapter
@@ -74,7 +81,7 @@ class TaskFragment : Fragment() {
             requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         getLocatePermission()
 
-        setupCategoriesRV()
+        setupCategoriesRV(taskItem)
         setupShopsRV()
         setupClickListeners()
 
@@ -102,8 +109,7 @@ class TaskFragment : Fragment() {
         }
 
         binding.mapActionButton.setOnClickListener {
-            val task = args.task
-            val listShops = viewModel.getShops(task)
+            val listShops = shopsInTasksList.map { it.shopItem }
             if (listShops.isNotEmpty()) {
                 if (isInternetAvailable(connectivityManager)) {
                     findNavController().navigate(
@@ -167,25 +173,6 @@ class TaskFragment : Fragment() {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 1
             )
-        }
-    }
-
-    private fun checkGPSandInetEnabled(): Boolean {
-        val locationManager =
-            requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
-
-        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
-        if (!isGpsEnabled && !isNetworkEnabled) {
-            Toast.makeText(
-                requireActivity(),
-                "Местоположение отключено. Пожалуйста, включите его.",
-                Toast.LENGTH_LONG
-            ).show()
-            return false
-        } else {
-            return true
         }
     }
 }
