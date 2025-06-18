@@ -31,7 +31,6 @@ class ShopRepositoryImpl @Inject constructor(
         categoryId: Int,
         photoUris: List<Uri>
     ):Flow<LoadingShopState> = flow {
-        Log.d(LOG, "photoUris isEmpty in start: ${photoUris.isNullOrEmpty()}")
 
         if (photoUris.isNullOrEmpty()) {
             emit(Error("Нет фотографий на отправку"))

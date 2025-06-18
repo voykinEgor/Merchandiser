@@ -19,7 +19,7 @@ import javax.inject.Inject
 class MainMenuFragment : Fragment() {
 
     companion object{
-        private const val USER_ID = "FDSFDS" //TODO: Исправить на понятную строку. ТАК НЕ ДЕЛАТЬ
+        private const val USER_ID = "FDSFDS"
     }
 
     private var _binding: FragmentMainMenuBinding? = null

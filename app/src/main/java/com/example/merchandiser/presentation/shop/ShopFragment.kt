@@ -84,9 +84,9 @@ class ShopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
         shopInTaskItem = args.shopItem
         val listCategories = shopInTaskItem.categories
-        Log.d(LOG, "List Categories: $listCategories")
         setupTextViews(shopInTaskItem, listCategories)
         setupClickListeners()
         setupRecyclerViews(listCategories)
@@ -101,41 +101,38 @@ class ShopFragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-//            Log.d(LOG, "Task:  ShopItemId: ${shopInTaskItem.shopItem.id} \n ShopItem: ${shopInTaskItem.categories}")
             sendPhotos()
         }
     }
 
-    private fun sendPhotos(){
-        val categoryData = shopInTaskItem.categories.mapNotNull { category ->
-            category.uriList?.let { uris -> category.category.id to uris.toList() }
-        }
-
-        viewModel.completeShop(taskId, shopInTaskItem.shopItem.id, categoryData)
-
-        viewModel.loadingState.observe(viewLifecycleOwner) {isLoading ->
+    private fun observeViewModel() {
+        viewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
-            if (isLoading){
-                binding.nextButton.backgroundTintList = requireContext().getColorStateList(R.color.disactivated_color)
-            }else{
-                binding.nextButton.backgroundTintList = requireContext().getColorStateList(R.color.hint_color)
-            }
             binding.nextButton.isEnabled = !isLoading
+            binding.nextButton.backgroundTintList = requireContext().getColorStateList(
+                if (isLoading) R.color.disactivated_color else R.color.hint_color
+            )
         }
 
-        viewModel.loadingStateList.observe(viewLifecycleOwner) {stateList ->
+        viewModel.loadingStateList.observe(viewLifecycleOwner) { stateList ->
             val errorMessages = stateList.filterIsInstance<Error>().map { it.message }
             if (errorMessages.isNotEmpty()) {
                 showErrorDialog(errorMessages)
-            }else{
-                if (categoryData.isEmpty()){
-                    showErrorDialog(listOf("Загрузите хотя бы одну фотографию"))
-                }else{
-                    showSuccessDialog()
-                }
-
+            } else {
+                showSuccessDialog()
             }
         }
+    }
+
+    private fun sendPhotos() {
+        val categoryData = shopInTaskItem.categories.mapNotNull { category ->
+            category.uriList?.let { uris -> category.category.id to uris.toList() }
+        }
+        if (categoryData.isEmpty()){
+            showErrorDialog(listOf("Загрузите хотя бы одну фотографию"))
+            return
+        }
+        viewModel.completeShop(taskId, shopInTaskItem.shopItem.id, categoryData)
     }
 
     private fun showSuccessDialog() {
@@ -144,7 +141,11 @@ class ShopFragment : Fragment() {
             .setMessage("Все данные были успешно отправлены.")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
-                findNavController().navigate(ShopFragmentDirections.actionShopFragmentToTaskFragment(taskItem))
+                findNavController().navigate(
+                    ShopFragmentDirections.actionShopFragmentToTaskFragment(
+                        taskItem
+                    )
+                )
             }
             .show()
     }
