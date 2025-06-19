@@ -5,14 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.merchandiser.R
-import com.example.merchandiser.data.models.transfer.CategoryItemTransfer
-import com.example.merchandiser.data.models.transfer.ShopItemTransfer
+import com.example.merchandiser.domain.ShopItem
+import com.example.merchandiser.domain.ShopsInTasks
 
-class RecyclerViewShopsAdapter: ListAdapter<ShopItemTransfer, RecyclerViewShopsHolder>(
+class RecyclerViewShopsAdapter: ListAdapter<ShopsInTasks, RecyclerViewShopsHolder>(
     RecyclerViewShopsDiffItem()
 ) {
 
-    var onItemClickListener: ((ShopItemTransfer) -> Unit)? = null
+    var onItemClickListener: ((ShopsInTasks) -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -27,7 +27,7 @@ class RecyclerViewShopsAdapter: ListAdapter<ShopItemTransfer, RecyclerViewShopsH
         position: Int
     ) {
         val shop = getItem(position)
-        holder.shopName.text = shop.name
+        holder.shopName.text = shop.shopItem.name
         holder.status.visibility = View.INVISIBLE
 
         holder.itemView.setOnClickListener {

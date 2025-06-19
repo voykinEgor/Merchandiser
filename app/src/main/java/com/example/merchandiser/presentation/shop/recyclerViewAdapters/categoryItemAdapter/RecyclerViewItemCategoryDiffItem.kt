@@ -1,20 +1,21 @@
 package com.example.merchandiser.presentation.shop.recyclerViewAdapters.categoryItemAdapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.merchandiser.data.models.transfer.CategoryItemTransfer
+import com.example.merchandiser.domain.CategoryInTasks
+import com.example.merchandiser.domain.CategoryItem
 
-class RecyclerViewItemCategoryDiffItem: DiffUtil.ItemCallback<CategoryItemTransfer>() {
+class RecyclerViewItemCategoryDiffItem: DiffUtil.ItemCallback<CategoryInTasks>() {
 
     override fun areItemsTheSame(
-        oldItem: CategoryItemTransfer,
-        newItem: CategoryItemTransfer
+        oldItem: CategoryInTasks,
+        newItem: CategoryInTasks
     ): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.category.id == newItem.category.id
     }
 
     override fun areContentsTheSame(
-        oldItem: CategoryItemTransfer,
-        newItem: CategoryItemTransfer
+        oldItem: CategoryInTasks,
+        newItem: CategoryInTasks
     ): Boolean {
         return oldItem == newItem
     }

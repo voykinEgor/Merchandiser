@@ -23,7 +23,7 @@
             app:destination="@id/shopFragment" />
         <argument
             android:name="points"
-            app:argType="com.example.merchandiser.data.models.transfer.ShopItemTransfer[]"
+            app:argType="com.example.merchandiser.domain.ShopItem[]"
             app:nullable="true" />
     </fragment>
     <fragment
@@ -40,15 +40,18 @@
         android:name="com.example.merchandiser.presentation.shop.ShopFragment"
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" >
-        <argument
-            android:name="shopItem"
-            app:argType="com.example.merchandiser.data.models.transfer.ShopItemTransfer" />
-        <argument
-            android:name="categoryList"
-            app:argType="com.example.merchandiser.data.models.transfer.ListCategoriesItemTransfer" />
         <action
             android:id="@+id/action_shopFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <argument
+            android:name="shopItem"
+            app:argType="com.example.merchandiser.domain.ShopsInTasks" />
+        <argument
+            android:name="taskItem"
+            app:argType="com.example.merchandiser.domain.TaskItem" />
+        <action
+            android:id="@+id/action_shopFragment_to_mainMenuFragment2"
+            app:destination="@id/mainMenuFragment2" />
     </fragment>
     <fragment
         android:id="@+id/taskFragment"
@@ -62,7 +65,7 @@
             android:id="@+id/action_taskFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
         <argument android:name="task"
-            app:argType="com.example.merchandiser.data.models.transfer.TaskItemTransfer" />
+            app:argType="com.example.merchandiser.domain.TaskItem" />
     </fragment>
     <fragment
         android:id="@+id/mainMenuFragment2"
@@ -74,12 +77,44 @@
         <action
             android:id="@+id/action_mainMenuFragment2_to_customTaskFragment"
             app:destination="@id/customTaskFragment" />
-        <argument
-            android:name="userId"
-            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.merchandiser.presentation.CameraFragment"
-        android:label="CameraFragment" />
+        android:label="CameraFragment" >
+        <action
+            android:id="@+id/action_cameraFragment_to_acceptPhotoFragment"
+            app:destination="@id/acceptPhotoFragment" />
+        <argument
+            android:name="categoryInShop"
+            app:argType="com.example.merchandiser.domain.CategoryInTasks" />
+        <argument
+            android:name="shopsInTasks"
+            app:argType="com.example.merchandiser.domain.ShopsInTasks" />
+        <argument
+            android:name="taskItem"
+            app:argType="com.example.merchandiser.domain.TaskItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/acceptPhotoFragment"
+        android:name="com.example.merchandiser.presentation.AcceptPhotoFragment"
+        android:label="fragment_accept_photo"
+        tools:layout="@layout/fragment_accept_photo" >
+        <action
+            android:id="@+id/action_acceptPhotoFragment_to_shopFragment"
+            app:destination="@id/shopFragment"
+            app:popUpTo="@id/taskFragment" />
+        <argument
+            android:name="uri"
+            app:argType="string" />
+        <argument
+            android:name="categoryInShop"
+            app:argType="com.example.merchandiser.domain.CategoryInTasks" />
+        <argument
+            android:name="shopsInTasks"
+            app:argType="com.example.merchandiser.domain.ShopsInTasks" />
+        <argument
+            android:name="taskItem"
+            app:argType="com.example.merchandiser.domain.TaskItem" />
+    </fragment>
 </navigation>

@@ -1,53 +1,42 @@
 package com.example.merchandiser.presentation.shop
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
 import androidx.appcompat.app.AlertDialog
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.RecyclerView
 import com.example.merchandiser.LOG
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.R
-import com.example.merchandiser.data.models.transfer.CategoryItemTransfer
-import com.example.merchandiser.data.models.transfer.ShopItemTransfer
 import com.example.merchandiser.databinding.FragmentShopBinding
+import com.example.merchandiser.domain.CategoryInTasks
+import com.example.merchandiser.domain.CategoryItem
+import com.example.merchandiser.domain.ShopsInTasks
+import com.example.merchandiser.domain.TaskItem
+import com.example.merchandiser.presentation.CameraFragmentDirections
+import com.example.merchandiser.presentation.Error
 import com.example.merchandiser.presentation.ViewModelFactory
-import com.example.merchandiser.presentation.shop.recyclerViewAdapters.attachPhotoAdapter.RecyclerViewPhotoAdapter
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.categoryItemAdapter.RecyclerViewItemCategoryAdapter
-import java.util.jar.Manifest
+import com.example.merchandiser.presentation.task.TaskFragmentDirections
 import javax.inject.Inject
-import kotlin.getValue
 
 class ShopFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private val viewModel by lazy{
+    private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[ShopViewModel::class.java]
     }
 
@@ -62,9 +51,17 @@ class ShopFragment : Fragment() {
 
     private lateinit var categoriesAdapter: RecyclerViewItemCategoryAdapter
     private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<Array<String>>
+    private lateinit var shopInTaskItem: ShopsInTasks
 
+    private var permissionsGranted: Boolean = false
 
+    private val taskId: Int by lazy {
+        args.taskItem.id
+    }
 
+    private val taskItem: TaskItem by lazy {
+        args.taskItem
+    }
 
 
     override fun onAttach(context: Context) {
@@ -87,41 +84,104 @@ class ShopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val shopItem = args.shopItem
-        val listCategories = args.categoryList.items
-        setupTextViews(shopItem, listCategories)
+        observeViewModel()
+        shopInTaskItem = args.shopItem
+        val listCategories = shopInTaskItem.categories
+        setupTextViews(shopInTaskItem, listCategories)
         setupClickListeners()
         setupRecyclerViews(listCategories)
         checkCameraPermission()
 
+
     }
 
-    private fun setupClickListeners(){
+    private fun setupClickListeners() {
         binding.backImageView.setOnClickListener {
             findNavController().popBackStack()
         }
 
+        binding.nextButton.setOnClickListener {
+            sendPhotos()
+        }
     }
 
-    private fun setupTextViews(shopItem: ShopItemTransfer, listCategories: List<CategoryItemTransfer>){
-        binding.shopTextView.text = shopItem.name
-        binding.addressTextView.text = "Адрес: ${shopItem.address}"
-        binding.categoriesTextView.text = extractCategoriesName(listCategories)
+    private fun observeViewModel() {
+        viewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
+            binding.nextButton.isEnabled = !isLoading
+            binding.nextButton.backgroundTintList = requireContext().getColorStateList(
+                if (isLoading) R.color.disactivated_color else R.color.hint_color
+            )
+        }
+
+        viewModel.loadingStateList.observe(viewLifecycleOwner) { stateList ->
+            val errorMessages = stateList.filterIsInstance<Error>().map { it.message }
+            if (errorMessages.isNotEmpty()) {
+                showErrorDialog(errorMessages)
+            } else {
+//                shopInTaskItem.status = true
+                showSuccessDialog()
+            }
+        }
     }
 
-    private fun extractCategoriesName(listCategories: List<CategoryItemTransfer>): String {
+    private fun sendPhotos() {
+        val categoryData = shopInTaskItem.categories.mapNotNull { category ->
+            category.uriList?.let { uris -> category.category.id to uris.toList() }
+        }
+        if (categoryData.isEmpty()){
+            showErrorDialog(listOf("Загрузите хотя бы одну фотографию"))
+            return
+        }
+        viewModel.completeShop(taskId, shopInTaskItem.shopItem.id, categoryData)
+    }
+
+    private fun showSuccessDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Успешно")
+            .setMessage("Все данные были успешно отправлены.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                findNavController().navigate(R.id.action_shopFragment_to_mainMenuFragment2)
+            }
+            .show()
+    }
+
+    private fun showErrorDialog(errorMessages: List<String>) {
+        val message = errorMessages.joinToString("\n") { "• $it" }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Произошли ошибки")
+            .setMessage(message)
+            .setPositiveButton("ОК") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+
+    private fun setupTextViews(
+        shopInTaskItem: ShopsInTasks,
+        listCategories: List<CategoryInTasks>
+    ) {
+        binding.shopTextView.text = shopInTaskItem.shopItem.name
+        binding.addressTextView.text = "Адрес: ${shopInTaskItem.shopItem.address}"
+        binding.categoriesTextView.text = extractCategoriesName(listCategories.map { it.category })
+    }
+
+    private fun extractCategoriesName(listCategories: List<CategoryItem>): String {
         val categoryNames = listCategories.map { it.name.lowercase() }
         val categoriesString = categoryNames.joinToString(", ")
         return "Категории: $categoriesString"
     }
 
-    private fun setupRecyclerViews(listCategories: List<CategoryItemTransfer>){
+    private fun setupRecyclerViews(listCategories: List<CategoryInTasks>) {
         categoriesAdapter = RecyclerViewItemCategoryAdapter()
         binding.recyclerViewCategories.adapter = categoriesAdapter
         categoriesAdapter.submitList(listCategories)
 
-        categoriesAdapter.photoAdapter.onItemClickListener = {
-            checkAndLaunchCamera()
+        categoriesAdapter.onPhotoClick = { photo, category ->
+            checkAndLaunchCamera(category)
         }
     }
 
@@ -135,17 +195,15 @@ class ShopFragment : Fragment() {
             } else {
                 permissions[android.Manifest.permission.READ_EXTERNAL_STORAGE] == true
             }
-            if (cameraGranted && photoGranted) {
-                initialCamera()
+            permissionsGranted = if (cameraGranted && photoGranted) {
+                true
             } else {
-                checkAndLaunchCamera()
+                false
             }
         }
     }
 
-
-
-    fun checkAndLaunchCamera() {
+    fun checkAndLaunchCamera(category: CategoryInTasks) {
         val cameraPermission = android.Manifest.permission.CAMERA
         val photoPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             android.Manifest.permission.READ_MEDIA_IMAGES
@@ -155,22 +213,39 @@ class ShopFragment : Fragment() {
 
         val permissionsToRequest = mutableListOf<String>()
 
-        if (ContextCompat.checkSelfPermission(requireActivity(), photoPermission) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                photoPermission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             permissionsToRequest.add(photoPermission)
         }
-        if (ContextCompat.checkSelfPermission(requireActivity(), cameraPermission) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                cameraPermission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             permissionsToRequest.add(cameraPermission)
         }
 
         if (permissionsToRequest.isEmpty()) {
-            initialCamera()
+            permissionsGranted = true
+            initialCamera(category)
         } else {
+            permissionsGranted = false
             requestCameraPermissionLauncher.launch(permissionsToRequest.toTypedArray())
         }
     }
 
-    private fun initialCamera() {
-        findNavController().navigate(R.id.action_shopFragment_to_cameraFragment)
+    private fun initialCamera(category: CategoryInTasks) {
+        if (permissionsGranted)
+            findNavController().navigate(
+                ShopFragmentDirections.actionShopFragmentToCameraFragment(
+                    category,
+                    shopInTaskItem,
+                    taskItem
+                )
+            )
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.merchandiser.presentation.task.recyclerViewAdapters.categories
+package com.example.merchandiser.presentation.customTask.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.merchandiser.domain.CategoryItem

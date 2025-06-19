@@ -1,4 +1,4 @@
-package com.example.merchandiser.presentation.task.recyclerViewAdapters.categories
+package com.example.merchandiser.presentation.customTask.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

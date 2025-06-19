@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#393939</color>
     <color name="hint_color">#6E71C7</color>
+    <color name="disactivated_color">#7879BC</color>
     <color name="main_color">#509E2E</color>
     <color name="vector_color">#283415</color>
     <color name="text_color">#FFFFFF</color>

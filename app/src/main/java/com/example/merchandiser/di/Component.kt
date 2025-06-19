@@ -24,9 +24,8 @@ interface Component {
     fun inject(fragment: MapFragment)
 
     @Component.Factory
-    interface ComponentFactory {
-        fun create(
-            @BindsInstance application: Application
-        ): com.example.merchandiser.di.Component
+    interface Factory {
+        fun create(@BindsInstance application: Application): com.example.merchandiser.di.Component
     }
+
 }

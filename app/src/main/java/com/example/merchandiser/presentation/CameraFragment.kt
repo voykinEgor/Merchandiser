@@ -1,8 +1,6 @@
 package com.example.merchandiser.presentation
 
-import android.app.Activity.RESULT_OK
 import android.content.ContentValues
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -11,7 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -20,25 +17,35 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.merchandiser.LOG
-import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentCameraBinding
-import com.example.merchandiser.databinding.FragmentShopBinding
+import com.example.merchandiser.domain.CategoryInTasks
+import com.example.merchandiser.domain.ShopsInTasks
+import com.example.merchandiser.domain.TaskItem
 
 class CameraFragment : Fragment() {
 
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
 
+    private val args by navArgs<CameraFragmentArgs>()
 
     private lateinit var imageCapture: ImageCapture
-    private var photoUri: Uri? = null
+
+    private lateinit var categoryInTaskItem: CategoryInTasks
+    private lateinit var shopInTaskItem: ShopsInTasks
+
+    private val taskItem: TaskItem by lazy {
+        args.taskItem
+    }
 
     private val galleryOpen =
         registerForActivityResult(
             ActivityResultContracts.GetContent())
         { uri ->
             uri?.let {
+                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(it.toString(), categoryInTaskItem, shopInTaskItem, taskItem))
                 Log.d(LOG, "Uri picked in gallery: $it")
             }
         }
@@ -53,6 +60,8 @@ class CameraFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        categoryInTaskItem = args.categoryInShop
+        shopInTaskItem = args.shopsInTasks
         launchCameraCapture()
         setupClickListeners()
 
@@ -134,7 +143,7 @@ class CameraFragment : Fragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    photoUri = output.savedUri
+                    findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAcceptPhotoFragment(output.savedUri.toString(), categoryInTaskItem, shopInTaskItem, taskItem))
                     Log.d(LOG, "Photo capture succeeded: ${output.savedUri}")
                 }
             }

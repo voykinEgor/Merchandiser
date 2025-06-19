@@ -8,12 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".presentation.shop.ShopFragment">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/viewFinder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
-
     <LinearLayout
         android:id="@+id/ll_backImage_cobs"
         android:layout_width="match_parent"
@@ -79,6 +73,16 @@
         tools:itemCount="3"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/textViewCategories"/>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:indeterminate="true"
+        app:indeterminateAnimationType="disjoint"
+        app:indicatorColor="@color/purple_500"
+        app:trackColor="@android:color/darker_gray"/>
 
     <Button
         android:id="@+id/nextButton"

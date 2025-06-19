@@ -8,5 +8,5 @@ import javax.inject.Inject
 class GetCategoriesSetUseCase @Inject constructor(
     private val taskRepository: TaskRepository
 ) {
-    fun getCategoriesSet(taskItem: TaskItem): Set<CategoryItem> = taskRepository.getCategoriesList(taskItem)
+    fun getCategoriesSet(taskItem: TaskItem): Set<CategoryItem> = taskRepository.getCategoriesSet(taskItem)
 }

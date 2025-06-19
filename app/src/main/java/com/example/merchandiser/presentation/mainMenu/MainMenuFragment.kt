@@ -19,7 +19,7 @@ import javax.inject.Inject
 class MainMenuFragment : Fragment() {
 
     companion object{
-        private const val USER_ID = "FDSFDS" //TODO: Исправить на понятную строку. ТАК НЕ ДЕЛАТЬ
+        private const val USER_ID = "FDSFDS"
     }
 
     private var _binding: FragmentMainMenuBinding? = null
@@ -61,10 +61,10 @@ class MainMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences(USER_ID, Context.MODE_PRIVATE)
-        val args = MainMenuFragmentArgs.fromBundle(requireArguments())
+        val userId = sharedPreferences.getInt(USER_ID, -1)
         rvAdapter = RecyclerViewAdapter()
         binding.recyclerViewTasks.adapter = rvAdapter
-        showTasksList(args.userId)
+        showTasksList(userId)
 
         binding.logoutImageView.setOnClickListener {
             logout()
@@ -81,8 +81,7 @@ class MainMenuFragment : Fragment() {
                 if (it.id == -1)
                     findNavController().navigate(R.id.action_mainMenuFragment2_to_customTaskFragment)
                 else{
-                    val taskTransfer = viewModel.mapTaskDomainToTaskTransfer(it)
-                    findNavController().navigate(MainMenuFragmentDirections.actionMainMenuFragment2ToTaskFragment(taskTransfer))
+                    findNavController().navigate(MainMenuFragmentDirections.actionMainMenuFragment2ToTaskFragment(it))
                 }
 
             }
