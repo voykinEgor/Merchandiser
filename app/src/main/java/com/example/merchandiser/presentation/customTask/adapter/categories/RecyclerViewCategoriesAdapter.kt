@@ -1,4 +1,4 @@
-package com.example.merchandiser.presentation.customTask.adapter
+package com.example.merchandiser.presentation.customTask.adapter.categories
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
