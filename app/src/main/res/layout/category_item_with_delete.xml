@@ -16,9 +16,10 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:padding="16dp">
+
         <TextView
             android:id="@+id/textViewShop"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="28sp"
             android:fontFamily="@font/ysabeau_sc"
@@ -26,6 +27,15 @@
             android:textColor="@color/text_color"
             android:layout_gravity="center"
             tools:text="Категория"/>
+
+        <ImageView
+            android:id="@+id/deleteImageView"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_close"
+            android:layout_gravity="center"
+            app:tint="@color/text_color" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
