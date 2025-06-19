@@ -8,5 +8,6 @@ import com.example.merchandiser.R
 
 class RecyclerViewShopsHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val shopName = itemView.findViewById<TextView>(R.id.textViewShop)
+    val shopAdress = itemView.findViewById<TextView>(R.id.addressTextView)
     val status = itemView.findViewById<ImageView>(R.id.doneImageView)
 }

@@ -15,18 +15,38 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
 
-        <TextView
-            android:id="@+id/textViewShop"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:fontFamily="@font/ysabeau_sc"
             android:layout_weight="1"
-            android:textColor="@color/text_color"
-            android:layout_gravity="center"
-            tools:text="Задание 1"/>
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewShop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28sp"
+                android:fontFamily="@font/ysabeau_sc"
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:layout_gravity="start"
+                tools:text="Задание 1"/>
+
+            <TextView
+                android:id="@+id/addressTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:fontFamily="@font/ysabeau_sc"
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:layout_gravity="start"
+                tools:text="Адрес"/>
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/doneImageView"
@@ -34,6 +54,7 @@
             android:layout_height="28dp"
             android:layout_gravity="center"
             tools:src="@drawable/done"/>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
