@@ -102,7 +102,8 @@
         tools:layout="@layout/fragment_accept_photo" >
         <action
             android:id="@+id/action_acceptPhotoFragment_to_shopFragment"
-            app:destination="@id/shopFragment" />
+            app:destination="@id/shopFragment"
+            app:popUpTo="@id/taskFragment" />
         <argument
             android:name="uri"
             app:argType="string" />

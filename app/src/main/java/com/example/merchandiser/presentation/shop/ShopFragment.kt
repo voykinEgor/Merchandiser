@@ -119,6 +119,7 @@ class ShopFragment : Fragment() {
             if (errorMessages.isNotEmpty()) {
                 showErrorDialog(errorMessages)
             } else {
+//                shopInTaskItem.status = true
                 showSuccessDialog()
             }
         }
