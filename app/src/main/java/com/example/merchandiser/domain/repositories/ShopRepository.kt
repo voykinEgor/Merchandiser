@@ -15,5 +15,7 @@ interface ShopRepository {
 
     fun getShopsAndCategoriesList(taskItem: TaskItem): List<ShopsInTasks>
 
+    suspend fun getAllShops(): List<ShopItem>
+
     fun addPhoto(photoUri: Uri)
 }

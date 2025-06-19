@@ -47,9 +47,17 @@ interface ApiService {
         @Part photo: List<MultipartBody.Part>
     ): Response<JSONObject>
 
+    @GET("shops")
+    suspend fun getAllShops(): Response<APIResponseDto<List<ShopItem>>>
+
     suspend fun getShopItem(shopId: Int): Response<ShopItem>
 
     suspend fun getShopList(taskId: Int): Response<List<ShopItem>>
 
     suspend fun uploadPhotos(photoUri: Uri): Response<String>
+
+    // Categories
+    @GET("categories")
+    suspend fun getAllCategories(): Response<APIResponseDto<List<CategoryItem>>>
+
 }

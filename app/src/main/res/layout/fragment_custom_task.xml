@@ -53,21 +53,47 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <LinearLayout
+        android:id="@+id/shopCard"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/purple_rect_with_radius"
         android:gravity="center_vertical"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="30dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
 
-        <TextView
-            android:id="@+id/addressTextView"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewShop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28sp"
+                android:fontFamily="@font/ysabeau_sc"
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:layout_gravity="start"
+                android:text="Выберите магазин"/>
+
+            <TextView
+                android:id="@+id/addressTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:fontFamily="@font/ysabeau_sc"
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:layout_gravity="start"
+                tools:text="Адрес"/>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/filterImageView"
@@ -80,7 +106,6 @@
             android:id="@+id/mapImageView"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginEnd="10dp"
             android:src="@drawable/map"/>
 
     </LinearLayout>
@@ -92,7 +117,6 @@
         style="@style/TextToTitle"
         android:textAlignment="textStart"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="30dp"
         android:textSize="32sp"
         android:text="Категории:"
         app:layout_constraintTop_toBottomOf="@id/ll_backImage_brandName"
@@ -102,11 +126,12 @@
         android:id="@+id/recyclerViewCategories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         tools:listitem="@layout/category_item"
-        tools:itemCount="3"
+        tools:itemCount="2"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCategories"/>
+        android:layout_weight="1"
+        android:layout_marginTop="15dp"/>
+
 
     <Button
         android:id="@+id/nextButton"

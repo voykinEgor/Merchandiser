@@ -2,6 +2,7 @@ package com.example.merchandiser.di
 
 import androidx.lifecycle.ViewModel
 import com.example.merchandiser.presentation.auth.AuthViewModel
+import com.example.merchandiser.presentation.customTask.CustomTaskViewModel
 import com.example.merchandiser.presentation.mainMenu.MainMenuViewModel
 import com.example.merchandiser.presentation.map.MapViewModel
 import com.example.merchandiser.presentation.shop.ShopViewModel
@@ -37,4 +38,9 @@ interface ViewModelModule {
     @ViewModelKey(MapViewModel::class)
     @Binds
     fun bindsMapViewModel(impl: MapViewModel): ViewModel
+
+    @IntoMap
+    @ViewModelKey(CustomTaskViewModel::class)
+    @Binds
+    fun bindsCustomTaskViewModel(impl: CustomTaskViewModel): ViewModel
 }

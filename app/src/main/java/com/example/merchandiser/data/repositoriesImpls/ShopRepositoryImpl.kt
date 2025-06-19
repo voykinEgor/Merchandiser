@@ -87,6 +87,16 @@ class ShopRepositoryImpl @Inject constructor(
 
     }
 
+    override suspend fun getAllShops(): List<ShopItem> {
+        val response = apiService.getAllShops()
+        if (response.isSuccessful){
+            val shopDtoList = response.body()?.data ?: listOf()
+            return shopDtoList
+        }else{
+            throw RuntimeException("Net error: ${response.code()} ${response.message()}")
+        }
+    }
+
     override fun getShopItem(shopId: Int): ShopItem {
         TODO("Not yet implemented")
     }

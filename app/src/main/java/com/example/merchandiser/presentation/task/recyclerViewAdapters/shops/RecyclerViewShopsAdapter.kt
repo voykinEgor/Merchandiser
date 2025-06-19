@@ -28,6 +28,7 @@ class RecyclerViewShopsAdapter: ListAdapter<ShopsInTasks, RecyclerViewShopsHolde
     ) {
         val shop = getItem(position)
         holder.shopName.text = shop.shopItem.name
+        holder.shopAdress.text = shop.shopItem.address
         holder.status.visibility = View.INVISIBLE
 
         holder.itemView.setOnClickListener {
