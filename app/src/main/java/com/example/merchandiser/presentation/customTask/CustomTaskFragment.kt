@@ -106,6 +106,14 @@ class CustomTaskFragment : Fragment() {
         binding.nextButton.setOnClickListener {
             checkFieldsAndCreateTask(userId)
         }
+
+        binding.mapImageView.setOnClickListener {
+            if (shopItem == null){
+                Toast.makeText(requireContext(), "Сначала выберите магазин", Toast.LENGTH_SHORT).show()
+            }else{
+                findNavController().navigate(CustomTaskFragmentDirections.actionCustomTaskFragmentToMapFragment(arrayOf(shopItem)))
+            }
+        }
     }
 
     private fun checkFieldsAndCreateTask(userId: Int){

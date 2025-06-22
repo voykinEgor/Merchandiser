@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.merchandiser.LOG
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.R
 import com.example.merchandiser.databinding.FragmentShopBinding
@@ -24,11 +22,9 @@ import com.example.merchandiser.domain.CategoryInTasks
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.ShopsInTasks
 import com.example.merchandiser.domain.TaskItem
-import com.example.merchandiser.presentation.CameraFragmentDirections
 import com.example.merchandiser.presentation.Error
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.shop.recyclerViewAdapters.categoryItemAdapter.RecyclerViewItemCategoryAdapter
-import com.example.merchandiser.presentation.task.TaskFragmentDirections
 import javax.inject.Inject
 
 class ShopFragment : Fragment() {
