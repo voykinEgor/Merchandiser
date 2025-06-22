@@ -2,9 +2,10 @@ package com.example.merchandiser.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class TaskItemDto(
+
+data class CreateTaskItemDto(
     @SerializedName("id")
-    val id: Int,
+    var id: Int? = null,
 
     @SerializedName("name")
     val name: String,
@@ -12,18 +13,12 @@ data class TaskItemDto(
     @SerializedName("user_id")
     val userId: Int,
 
-    @SerializedName("create_at")
-    val createAt: String,
-
     @SerializedName("finish_at")
     val finishAt: String,
 
-    @SerializedName("status")
-    val status: Boolean,
+    @SerializedName("shops_id")
+    val shops: List<Int>,
 
-    @SerializedName("shops")
-    val shops: List<ShopDto>,
-
-    @SerializedName("categories")
-    val categories: Set<CategoryDto>
+    @SerializedName("categories_id")
+    val categories: List<Int>
 )

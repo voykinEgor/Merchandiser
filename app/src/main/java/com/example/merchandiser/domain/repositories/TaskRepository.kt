@@ -7,7 +7,7 @@ interface TaskRepository {
 
     suspend fun completeTask(taskId: Int)
 
-    suspend fun createTask()
+    suspend fun createTask(taskItem: TaskItem, userId: Int): Boolean
 
     suspend fun getTaskList(userId: Int): List<TaskItem>
 

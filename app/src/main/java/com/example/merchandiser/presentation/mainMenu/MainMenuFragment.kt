@@ -75,7 +75,7 @@ class MainMenuFragment : Fragment() {
     private fun showTasksList(userId: Int){
         viewModel.getTasksList(userId)
         viewModel.tasksList.observe(requireActivity()) {tasksList ->
-
+            
             rvAdapter.submitList(tasksList)
             rvAdapter.onTaskItemClickListener = {
                 if (it.id == -1)

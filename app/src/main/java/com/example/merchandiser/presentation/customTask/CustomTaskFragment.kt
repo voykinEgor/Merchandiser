@@ -1,31 +1,41 @@
 package com.example.merchandiser.presentation.customTask
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.databinding.FragmentCustomTaskBinding
 import com.example.merchandiser.domain.CategoryItem
+import com.example.merchandiser.domain.ShopItem
+import com.example.merchandiser.domain.ShopsInTasks
+import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.presentation.ViewModelFactory
 import com.example.merchandiser.presentation.customTask.adapter.categories.AddedCategoriesAdapter
-import com.example.merchandiser.presentation.customTask.adapter.categories.CategoriesAdapter
 import com.example.merchandiser.presentation.customTask.bottomSheet.CategoriesBottomSheet
 import com.example.merchandiser.presentation.customTask.bottomSheet.ShopBottomSheet
 import javax.inject.Inject
 
 class CustomTaskFragment : Fragment() {
 
+    companion object{
+        private const val USER_ID = "FDSFDS"
+    }
+
     private var _binding: FragmentCustomTaskBinding? = null
     private val binding get() = _binding!!
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     private val viewModel by lazy{
         ViewModelProvider(this, viewModelFactory)[CustomTaskViewModel::class.java]
@@ -34,9 +44,14 @@ class CustomTaskFragment : Fragment() {
     private val component by lazy {
         (requireActivity().application as MerchApp).component
     }
-
+    private var shopItem: ShopItem? = null
     private val _addedCategories = mutableListOf<CategoryItem>()
     private lateinit var addedCategoriesAdapter: AddedCategoriesAdapter
+
+    private lateinit var taskItem: TaskItem
+    private lateinit var shopInTaskItem: ShopsInTasks
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,12 +68,23 @@ class CustomTaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPreferences = requireContext().getSharedPreferences(USER_ID, Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt(USER_ID, -1)
 
         viewModel.getAllShop()
         viewModel.getAllCategories()
+        setupClickListeners(userId)
+        observeViewModel()
+    }
 
-        setupObservers()
-        setupClickListeners()
+    private fun observeViewModel(){
+        viewModel.taskCreationResult.observe(viewLifecycleOwner) {isSuccess ->
+            if (isSuccess){
+                findNavController().navigate(CustomTaskFragmentDirections.actionCustomTaskFragmentToShopFragment(shopInTaskItem, taskItem))
+            }else{
+                Toast.makeText(requireContext(), "Возникла ошибка при создании задания, требуется перезайти в приложение", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -66,11 +92,7 @@ class CustomTaskFragment : Fragment() {
         _binding = null
     }
 
-    private fun setupObservers(){
-
-    }
-
-    private fun setupClickListeners(){
+    private fun setupClickListeners(userId: Int){
         binding.backImageView.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -80,6 +102,20 @@ class CustomTaskFragment : Fragment() {
         }
 
         setupAddedStoresRecyclerView()
+
+        binding.nextButton.setOnClickListener {
+            checkFieldsAndCreateTask(userId)
+        }
+    }
+
+    private fun checkFieldsAndCreateTask(userId: Int){
+        if (shopItem == null || _addedCategories.isEmpty()){
+            Toast.makeText(requireContext(), "Выберите категорию и магазин", Toast.LENGTH_SHORT).show()
+        }else{
+            shopInTaskItem = viewModel.createShopInTask(shopItem!!, _addedCategories)
+            taskItem = viewModel.createTaskItem(shopInTaskItem, _addedCategories, userId)
+        }
+
     }
 
     private fun openStoresBottomSheet() {
@@ -87,7 +123,7 @@ class CustomTaskFragment : Fragment() {
         bottomSheet.setOnStoreSelectedListener { selectedShop ->
             binding.textViewShop.text = selectedShop.name
             binding.addressTextView.text = selectedShop.address
-            // Дополнительные действия с выбранным магазином
+            shopItem = selectedShop
         }
 
         bottomSheet.show(childFragmentManager, "StoresBottomSheet")

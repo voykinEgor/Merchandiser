@@ -1,5 +1,7 @@
 package com.example.merchandiser.data.repositoriesImpls
 
+import android.util.Log
+import com.example.merchandiser.LOG
 import com.example.merchandiser.data.ApiService
 import com.example.merchandiser.data.mappers.ShopMapper
 import com.example.merchandiser.data.mappers.TaskMapper
@@ -17,8 +19,14 @@ class TaskRepositoryImpl @Inject constructor (
         TODO("Not yet implemented")
     }
 
-    override suspend fun createTask() {
-        TODO("Not yet implemented")
+    override suspend fun createTask(taskItem: TaskItem, userId: Int): Boolean {
+        val taskItemDto = taskMapper.mapTaskDomainToTaskDto(taskItem, userId)
+        Log.d(LOG, "TaskItemDto: $taskItemDto")
+        val response = apiService.createTask(taskItemDto)
+        if (response.isSuccessful){
+            return response.body()?.success == true
+        }
+        return false
     }
 
     override suspend fun getTaskList(userId: Int): List<TaskItem> {

@@ -26,6 +26,21 @@ class ShopMapper @Inject constructor() {
         longitude = shopDto.longitude
     )
 
+    fun mapShopDomainToShopDto(shopItem: ShopItem): ShopDto = ShopDto(
+        id = shopItem.id,
+        name = shopItem.name,
+        city = splitAddressToThreeString(shopItem.address)[0],
+        street = splitAddressToThreeString(shopItem.address)[1],
+        building = splitAddressToThreeString(shopItem.address)[2],
+        latitude = shopItem.latitude,
+        longitude = shopItem.longitude,
+        address = shopItem.address
+    )
+
+    private fun splitAddressToThreeString(address: String): Array<String>{
+        return address.split(',').toTypedArray()
+    }
+
     fun mapShopItemDtoToShopInTasks(
         shops: List<ShopDto>,
         categories: Set<CategoryDto>
@@ -53,5 +68,13 @@ class ShopMapper @Inject constructor() {
 
     private fun mapCategoryToCategoryInTasks(categoryDto: CategoryDto): CategoryInTasks {
         return CategoryInTasks(mapCategoryDtoToCategoryDomain(categoryDto), null)
+    }
+
+    private fun categoryDomainToCategoryInTask(categoryItem: CategoryItem): CategoryInTasks{
+        return CategoryInTasks(categoryItem)
+    }
+
+    fun mapCategoriesListToCategoriesInTaskList(categories: List<CategoryItem>): List<CategoryInTasks>{
+        return categories.map { categoryDomainToCategoryInTask(it) }
     }
 }
