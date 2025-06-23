@@ -53,7 +53,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_gravity="center"
-            tools:src="@drawable/done"/>
+            android:src="@drawable/done"/>
 
     </LinearLayout>
 

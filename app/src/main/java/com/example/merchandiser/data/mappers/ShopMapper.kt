@@ -10,20 +10,13 @@ import javax.inject.Inject
 
 class ShopMapper @Inject constructor() {
 
-    fun mapShopsInTasksToListShops(listShopsInTasks: List<ShopsInTasks>): List<ShopItem> {
-        val listShops = mutableListOf<ShopItem>()
-        for (shop in listShopsInTasks) {
-            listShops.add(shop.shopItem)
-        }
-        return listShops
-    }
-
     private fun mapShopDtoToShopDomain(shopDto: ShopDto): ShopItem = ShopItem(
         id = shopDto.id,
         name = shopDto.name,
         address = shopDto.address,
         latitude = shopDto.latitude,
-        longitude = shopDto.longitude
+        longitude = shopDto.longitude,
+        status = shopDto.status
     )
 
     fun mapShopDomainToShopDto(shopItem: ShopItem): ShopDto = ShopDto(
@@ -34,7 +27,8 @@ class ShopMapper @Inject constructor() {
         building = splitAddressToThreeString(shopItem.address)[2],
         latitude = shopItem.latitude,
         longitude = shopItem.longitude,
-        address = shopItem.address
+        address = shopItem.address,
+        status = shopItem.status
     )
 
     private fun splitAddressToThreeString(address: String): Array<String>{
@@ -49,7 +43,8 @@ class ShopMapper @Inject constructor() {
         for (shop in shops) {
             val shopInTasks = ShopsInTasks(
                 mapShopDtoToShopDomain(shop),
-                mapCategoriesSetToListCategoriesInTasks(categories)
+                mapCategoriesSetToListCategoriesInTasks(categories),
+                shop.status
             )
             shopsInTaskList.add(shopInTasks)
         }

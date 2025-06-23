@@ -1,12 +1,16 @@
 package com.example.merchandiser.presentation.mainMenu.recyclerViewAdapters
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import com.example.merchandiser.R
 import com.example.merchandiser.domain.TaskItem
 import java.text.SimpleDateFormat
 import java.util.Locale
+import androidx.core.graphics.toColorInt
 
 class RecyclerViewAdapter: ListAdapter<TaskItem, RecyclerViewHolder>(RecyclerViewDiffItem()) {
 
@@ -31,6 +35,14 @@ class RecyclerViewAdapter: ListAdapter<TaskItem, RecyclerViewHolder>(RecyclerVie
     ) {
         val task = getItem(position)
         holder.textViewName.text = task.name
+
+        holder.itemView.backgroundTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(
+                holder.itemView.context,
+                if (task.status) R.color.disactivated_color else R.color.spinner_color
+            )
+        )
+
 
         if (task.id == -1)
             holder.textViewDateTo.text = ""

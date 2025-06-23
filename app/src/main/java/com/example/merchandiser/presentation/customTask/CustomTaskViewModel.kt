@@ -55,7 +55,7 @@ class CustomTaskViewModel @Inject constructor(
 
     fun createShopInTask(shopItem: ShopItem, categories: List<CategoryItem>): ShopsInTasks{
         val categoriesInTaskList = shopMapper.mapCategoriesListToCategoriesInTaskList(categories)
-        return ShopsInTasks(shopItem, categoriesInTaskList)
+        return ShopsInTasks(shopItem, categoriesInTaskList, false)
     }
 
     fun createTaskItem(shopsInTasks: ShopsInTasks, categories: List<CategoryItem>, userId: Int): TaskItem{

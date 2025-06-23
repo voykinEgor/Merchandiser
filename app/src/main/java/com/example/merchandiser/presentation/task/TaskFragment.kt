@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.merchandiser.LOG
 import com.example.merchandiser.MerchApp
 import com.example.merchandiser.databinding.FragmentTaskBinding
 import com.example.merchandiser.domain.CategoryItem
@@ -75,6 +77,7 @@ class TaskFragment : Fragment() {
         taskItem = args.task
         binding.merchTextView.text = taskItem.name
         shopsInTasksList = viewModel.getShops(taskItem)
+        Log.d(LOG, "listShops: ${shopsInTasksList[0].status}")
         setupCategoriesRV(taskItem)
 
         connectivityManager =
@@ -110,6 +113,7 @@ class TaskFragment : Fragment() {
 
         binding.mapActionButton.setOnClickListener {
             val listShops = shopsInTasksList.map { it.shopItem }
+
             if (listShops.isNotEmpty()) {
                 if (isInternetAvailable(connectivityManager)) {
                     findNavController().navigate(

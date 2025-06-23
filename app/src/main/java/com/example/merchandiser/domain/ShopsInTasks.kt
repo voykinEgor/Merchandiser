@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class ShopsInTasks(
     val shopItem: ShopItem,
     val categories: List<CategoryInTasks>,
-    var status: Boolean = false
+    var status: Boolean
 ): Parcelable

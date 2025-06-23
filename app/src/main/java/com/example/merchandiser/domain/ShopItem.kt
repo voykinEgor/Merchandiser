@@ -9,5 +9,6 @@ data class ShopItem(
     val name: String,
     val address: String,
     val latitude: Float,
-    val longitude: Float
+    val longitude: Float,
+    val status: Boolean
 ): Parcelable

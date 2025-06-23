@@ -67,7 +67,7 @@ class ShopRepositoryImpl @Inject constructor(
         }
 
         Log.d(LOG, "Before Response")
-        val response = apiService.completeShop(taskId, shopId, categoryId, false, photoParts)
+        val response = apiService.completeShop(taskId, shopId, categoryId, true, photoParts)
         Log.d(LOG, "After Response ${response.raw()}")
 
         if (response.isSuccessful) {

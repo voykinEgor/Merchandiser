@@ -25,5 +25,8 @@ data class ShopDto (
     val longitude: Float,
 
     @SerializedName("address")
-    val address: String
+    val address: String,
+
+    @SerializedName("status")
+    val status: Boolean
 )

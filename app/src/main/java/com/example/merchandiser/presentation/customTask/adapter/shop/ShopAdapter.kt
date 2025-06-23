@@ -1,6 +1,7 @@
 package com.example.merchandiser.presentation.customTask.adapter.shop
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.merchandiser.databinding.ShopItemBinding
@@ -17,6 +18,7 @@ class StoresAdapter(
         fun bind(shop: ShopItem) {
             binding.textViewShop.text = shop.name
             binding.addressTextView.text = shop.address
+            binding.doneImageView.visibility = View.INVISIBLE
             binding.root.setOnClickListener { onStoreClicked(shop) }
         }
     }
