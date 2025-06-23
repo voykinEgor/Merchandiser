@@ -5,6 +5,7 @@ import com.example.merchandiser.LOG
 import com.example.merchandiser.data.ApiService
 import com.example.merchandiser.data.mappers.ShopMapper
 import com.example.merchandiser.data.mappers.TaskMapper
+import com.example.merchandiser.data.models.TaskItemDto
 import com.example.merchandiser.domain.CategoryItem
 import com.example.merchandiser.domain.TaskItem
 import com.example.merchandiser.domain.repositories.TaskRepository
@@ -12,21 +13,16 @@ import javax.inject.Inject
 
 class TaskRepositoryImpl @Inject constructor (
     private val apiService: ApiService,
-    private val taskMapper: TaskMapper,
-    private val shopMapper: ShopMapper
+    private val taskMapper: TaskMapper
 ): TaskRepository {
     override suspend fun completeTask(taskId: Int) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun createTask(taskItem: TaskItem, userId: Int): Boolean {
+    override suspend fun createTask(taskItem: TaskItem, userId: Int): TaskItem {
         val taskItemDto = taskMapper.mapTaskDomainToTaskDto(taskItem, userId)
-        Log.d(LOG, "TaskItemDto: $taskItemDto")
         val response = apiService.createTask(taskItemDto)
-        if (response.isSuccessful){
-            return response.body()?.success == true
-        }
-        return false
+        return taskMapper.mapTaskDtoToTaskDomain(response.body()?.data ?: throw RuntimeException("Ошибка при создании кастомного задания"))
     }
 
     override suspend fun getTaskList(userId: Int): List<TaskItem> {

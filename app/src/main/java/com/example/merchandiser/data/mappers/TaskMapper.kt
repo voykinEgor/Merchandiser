@@ -10,7 +10,7 @@ import javax.inject.Inject
 class TaskMapper @Inject constructor(
     private val shopMapper: ShopMapper
 ) {
-    private fun mapTaskDtoToTaskDomain(taskDto: TaskItemDto): TaskItem = TaskItem(
+    fun mapTaskDtoToTaskDomain(taskDto: TaskItemDto): TaskItem = TaskItem(
         id = taskDto.id ,
         name = taskDto.name,
         date = taskDto.finishAt,

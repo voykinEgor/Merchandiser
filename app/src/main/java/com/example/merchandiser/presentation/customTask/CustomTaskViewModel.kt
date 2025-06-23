@@ -32,8 +32,8 @@ class CustomTaskViewModel @Inject constructor(
 
     private val DIVIDER = 60000
 
-    private val _taskCreationResult = MutableLiveData<Boolean>()
-    val taskCreationResult: LiveData<Boolean> = _taskCreationResult
+    private val _taskCreationResult = MutableLiveData<TaskItem>()
+    val taskCreationResult: LiveData<TaskItem> = _taskCreationResult
 
     private val _shopsList: MutableLiveData<List<ShopItem>> = MutableLiveData()
     val shopsList: LiveData<List<ShopItem>> get() = _shopsList
@@ -55,19 +55,18 @@ class CustomTaskViewModel @Inject constructor(
 
     fun createShopInTask(shopItem: ShopItem, categories: List<CategoryItem>): ShopsInTasks{
         val categoriesInTaskList = shopMapper.mapCategoriesListToCategoriesInTaskList(categories)
-        return ShopsInTasks(shopItem, categoriesInTaskList, false)
+        return ShopsInTasks(shopItem, categoriesInTaskList, true)
     }
 
-    fun createTaskItem(shopsInTasks: ShopsInTasks, categories: List<CategoryItem>, userId: Int): TaskItem{
+    fun createTaskItem(shopsInTasks: ShopsInTasks, categories: List<CategoryItem>, userId: Int){
         val id = (System.currentTimeMillis()/DIVIDER).toInt()
         val name = "Свободное задание"
         val date = formatDate(LocalDateTime.now())
-        val taskItem = TaskItem(id, name, date, categories.toSet(), listOf(shopsInTasks), false)
+        val taskItem = TaskItem(id, name, date, categories.toSet(), listOf(shopsInTasks), true)
         Log.d(LOG, "taskItem: $taskItem")
         viewModelScope.launch {
             _taskCreationResult.value = createTaskUseCase.createTask(taskItem, userId)
         }
-        return taskItem
     }
 
 

@@ -48,7 +48,6 @@ class CustomTaskFragment : Fragment() {
     private val _addedCategories = mutableListOf<CategoryItem>()
     private lateinit var addedCategoriesAdapter: AddedCategoriesAdapter
 
-    private lateinit var taskItem: TaskItem
     private lateinit var shopInTaskItem: ShopsInTasks
 
 
@@ -78,12 +77,8 @@ class CustomTaskFragment : Fragment() {
     }
 
     private fun observeViewModel(){
-        viewModel.taskCreationResult.observe(viewLifecycleOwner) {isSuccess ->
-            if (isSuccess){
-                findNavController().navigate(CustomTaskFragmentDirections.actionCustomTaskFragmentToShopFragment(shopInTaskItem, taskItem))
-            }else{
-                Toast.makeText(requireContext(), "Возникла ошибка при создании задания, требуется перезайти в приложение", Toast.LENGTH_SHORT).show()
-            }
+        viewModel.taskCreationResult.observe(viewLifecycleOwner) {taskItem ->
+            findNavController().navigate(CustomTaskFragmentDirections.actionCustomTaskFragmentToShopFragment(shopInTaskItem, taskItem))
         }
     }
 
@@ -121,7 +116,7 @@ class CustomTaskFragment : Fragment() {
             Toast.makeText(requireContext(), "Выберите категорию и магазин", Toast.LENGTH_SHORT).show()
         }else{
             shopInTaskItem = viewModel.createShopInTask(shopItem!!, _addedCategories)
-            taskItem = viewModel.createTaskItem(shopInTaskItem, _addedCategories, userId)
+            viewModel.createTaskItem(shopInTaskItem, _addedCategories, userId)
         }
 
     }
